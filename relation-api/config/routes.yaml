@@ -1,0 +1,5 @@
+controllers:
+    resource:
+        path: ../src/Relation/Presentation/Controller/
+        namespace: App\Relation\Presentation\Controller
+    type: attribute

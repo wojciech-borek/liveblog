@@ -1,0 +1,12 @@
+default:
+    suites:
+        default:
+            paths:
+               - '%paths.base%/tests/behat/Features'
+            contexts:
+               - App\Tests\Behat\Context\RelationContext
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                class: App\Shared\Infrastructure\Kernel
+                environment: test
