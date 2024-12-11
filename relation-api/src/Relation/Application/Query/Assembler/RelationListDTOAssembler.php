@@ -11,7 +11,9 @@ class RelationListDTOAssembler
         return new RelationListDTO(
             $relation->getId(),
             $relation->getTitle(),
-            $relation->getStatus()->value
+            $relation->getStatus(),
+            $relation->getCreatedAt(),
+            $relation->getModifiedAt()
         );
     }
 

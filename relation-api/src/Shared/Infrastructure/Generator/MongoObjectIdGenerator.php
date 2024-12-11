@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Infrastructure\MongoObjectId;
+namespace App\Shared\Infrastructure\Generator;
 
 use MongoDB\BSON\ObjectId;
 

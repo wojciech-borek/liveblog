@@ -1,8 +1,9 @@
 <?php
-namespace App\Relation\Infrastructure\Repository;
+namespace App\Relation\Infrastructure\Persistence\Repository;
 
 use App\Relation\Domain\Model\Post;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
+use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Shared\Infrastructure\Persistence\Doctrine\DoctrineRepository;
 use MongoDB\BSON\ObjectId;
 
@@ -15,15 +16,15 @@ class PostRepository extends DoctrineRepository implements PostRepositoryInterfa
     }
 
 
-    public function findById($id): ?Post {
-        return $this->documentManager()->find(Post::class,$id);
+    public function findById(RelationId $relationId): ?Post {
+        return $this->documentManager()->find(Post::class,$relationId->value());
     }
 
-    public function deleteByRelationId(string $relationId): void {
+    public function deleteByRelationId(RelationId $relationId): void {
         $qb = $this->documentManager()->getRepository(Post::class)->createQueryBuilder();
         $qb
             ->remove()
-            ->field('relation.$id')->equals(new ObjectId($relationId))
+            ->field('relation.$id')->equals(new ObjectId($relationId->value()))
             ->getQuery()
             ->execute();
     }

@@ -6,7 +6,6 @@ use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
 use App\Relation\Application\Command\RelationDelete\RelationDeleteCommand;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
 use App\Shared\Application\MessageCommandBusInterface;
-use App\Shared\Domain\Exception\DomainException;
 use App\Shared\Infrastructure\Bus\Query\MessengerQueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,25 +35,16 @@ class RelationManagement extends AbstractController
         /**
          * @todo add validation
          */
-        try {
-            $this->messageBus->dispatch(new RelationCreateCommand(
-                $data['title']
-            ));
-        } catch (DomainException $e) {
-            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        $this->messageBus->dispatch(new RelationCreateCommand(
+            $data['title']
+        ));
 
         return $this->json(null, Response::HTTP_ACCEPTED);
     }
 
     #[Route('/relations/{id}', name: 'relation_delete', methods: ['delete'])]
     public function delete(string $id): JsonResponse {
-        try {
-            $this->messageBus->dispatch(new RelationDeleteCommand($id));
-        } catch (DomainException $e) {
-            return $this->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-
+        $this->messageBus->dispatch(new RelationDeleteCommand($id));
         return $this->json(null, Response::HTTP_ACCEPTED);
     }
 

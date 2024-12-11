@@ -2,8 +2,6 @@
 
 namespace App\Shared\Infrastructure\Persistence\Doctrine;
 
-
-use App\Shared\Domain\Aggregate\AggregateRoot;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
@@ -21,7 +19,7 @@ abstract class DoctrineRepository
      * @throws \Throwable
      * @throws MongoDBException
      */
-    protected function persist(AggregateRoot $document): void
+    protected function persist($document): void
     {
         $this->documentManager()->persist($document);
         $this->documentManager()->flush();
@@ -31,7 +29,7 @@ abstract class DoctrineRepository
      * @throws \Throwable
      * @throws MongoDBException
      */
-    protected function remove(AggregateRoot $document): void
+    protected function remove($document): void
     {
         $this->documentManager()->remove($document);
         $this->documentManager()->flush();
