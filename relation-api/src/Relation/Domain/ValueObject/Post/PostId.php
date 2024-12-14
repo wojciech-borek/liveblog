@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Relation\Domain\ValueObject\Relation;
+namespace App\Relation\Domain\ValueObject\Post;
 
 use App\Shared\Domain\ValueObject\MongoObjectId;
 

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace App\Relation\Domain\Model;
 
-
+use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\ValueObject\Relation\PostCollection;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;
@@ -13,13 +14,15 @@ use App\Shared\Domain\ValueObject\ModifiedAt;
 
 class Relation extends AggregateRoot
 {
+    private PostCollection $postsPublished;
+    private PostCollection $postsUnpublished;
+
     protected function __construct(
-        private readonly RelationId     $id,
-        private readonly RelationTitle  $title,
-        private readonly RelationStatus $status,
-        private readonly CreatedAt      $createdAt,
-        private readonly ModifiedAt     $modifiedAt,
-        private readonly PostCollection $posts
+        private readonly RelationId    $id,
+        private readonly RelationTitle $title,
+        private RelationStatus         $status,
+        private readonly CreatedAt     $createdAt,
+        private readonly ModifiedAt    $modifiedAt,
     ) {
     }
 
@@ -29,16 +32,36 @@ class Relation extends AggregateRoot
         RelationStatus $status,
         CreatedAt      $createdAt,
         ModifiedAt     $modifiedAt,
-        PostCollection $posts
     ): Relation {
         return new self(
             $id,
             $title,
             $status,
             $createdAt,
-            $modifiedAt,
-            $posts
+            $modifiedAt
         );
+    }
+
+    public function publish(): void {
+        if ($this->status->isPublished()) {
+            throw new \DomainException('Relation is already published.');
+        }
+        $this->status = new RelationStatus(RelationStatusEnum::PUBLISHED->value);
+    }
+
+    public function unpublish(): void {
+        if ($this->status->isDraft()) {
+            throw new \DomainException('Relation is already draft.');
+        }
+        $this->status = new RelationStatus(RelationStatusEnum::DRAFT->value);
+    }
+
+    public function addUnpublishedPost(Post $post): void{
+        $this->postsUnpublished->add($post);
+    }
+
+    public function addPublishedPost(Post $post): void {
+        $this->postsPublished->add($post);
     }
 
     public function getId(): RelationId {
@@ -61,11 +84,12 @@ class Relation extends AggregateRoot
         return $this->modifiedAt;
     }
 
-    public function getPosts(): PostCollection {
-        return $this->posts;
+    public function getPostsPublished(): PostCollection {
+        return $this->postsPublished;
     }
 
-
-
+    public function getPostsUnpublished(): PostCollection {
+        return $this->postsUnpublished;
+    }
 
 }

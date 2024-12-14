@@ -2,8 +2,9 @@
 
 namespace App\Relation\Presentation\Controller;
 
+use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
-use App\Relation\Application\Command\RelationDelete\RelationDeleteCommand;
+use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
 use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Infrastructure\Bus\Query\MessengerQueryBus;
@@ -19,7 +20,7 @@ class RelationManagement extends AbstractController
     public function __construct(private readonly MessengerQueryBus $messengerQueryBus, private readonly MessageCommandBusInterface $messageBus) {
     }
 
-    #[Route('/relations', name: 'relation_index', methods: ['get'])]
+    #[Route('/relations', name: 'relation_index', methods: ['GET'])]
     public function index(Request $request): JsonResponse {
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
@@ -29,7 +30,7 @@ class RelationManagement extends AbstractController
     }
 
 
-    #[Route('/relations', name: 'relation_create', methods: ['post'])]
+    #[Route('/relations', name: 'relation_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
         /**
@@ -42,9 +43,21 @@ class RelationManagement extends AbstractController
         return $this->json(null, Response::HTTP_ACCEPTED);
     }
 
-    #[Route('/relations/{id}', name: 'relation_delete', methods: ['delete'])]
-    public function delete(string $id): JsonResponse {
-        $this->messageBus->dispatch(new RelationDeleteCommand($id));
+    #[Route('/relations/{id}/publish', name: 'relation_publish', methods: ['POST'])]
+    public function publish(string $id): JsonResponse {
+        $this->messageBus->dispatch(new RelationPublishCommand(
+            $id
+        ));
+        return $this->json(null, Response::HTTP_ACCEPTED);
+    }
+    #[Route('/relations/{id}/create_post', name: 'relation_create_post', methods: ['POST'])]
+    public function createPost(string $id,Request $request): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $this->messageBus->dispatch(new PostCreateCommand(
+            $id,
+            $data['content']
+        ));
         return $this->json(null, Response::HTTP_ACCEPTED);
     }
 

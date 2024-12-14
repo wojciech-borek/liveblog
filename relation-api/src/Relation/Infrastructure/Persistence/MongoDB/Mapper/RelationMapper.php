@@ -2,7 +2,6 @@
 
 namespace App\Relation\Infrastructure\Persistence\MongoDB\Mapper;
 
-use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
@@ -14,23 +13,32 @@ use App\Shared\Domain\ValueObject\ModifiedAt;
 class RelationMapper
 {
     public static function toDomain(RelationDocument $document): Relation {
-        return Relation::establish(
+        $relation = Relation::establish(
             new RelationId($document->getId()),
             new RelationTitle($document->getTitle()),
             new RelationStatus($document->getStatus()),
             new CreatedAt($document->getCreatedAt()),
             new ModifiedAt($document->getModifiedAt()),
-            new PostCollection()
         );
+
+        foreach ($document->getPosts() as $post) {
+            $post = PostMapper::toDomain($post);
+            if ($post->getIsPublished()) {
+                $relation->addPublishedPost($post);
+            } else {
+                $relation->addUnpublishedPost($post);
+            }
+        }
+        return $relation;
     }
 
     public static function toDocument(Relation $relation): RelationDocument {
         $document = new RelationDocument();
-        $document->setId($relation->getId()->value());
-        $document->setTitle($relation->getTitle()->value());
-        $document->setStatus($relation->getStatus()->value());
-        $document->setCreatedAt($relation->getCreatedAt()->value());
-        $document->setModifiedAt($relation->getModifiedAt()->value());
+        $document->setId($relation->getId()->getValue());
+        $document->setTitle($relation->getTitle()->getValue());
+        $document->setStatus($relation->getStatus()->getValue());
+        $document->setCreatedAt($relation->getCreatedAt()->getValue());
+        $document->setModifiedAt($relation->getModifiedAt()->getValue());
 
         return $document;
     }

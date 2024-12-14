@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Relation\Domain\Exception\Post;
+namespace App\Relation\Domain\Exception;
 
 use App\Shared\Domain\Exception\DomainException;
 

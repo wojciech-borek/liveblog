@@ -2,7 +2,6 @@
 
 namespace App\Relation\Application\Query\DTO;
 
-use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;
 use App\Shared\Domain\ValueObject\CreatedAt;
@@ -15,23 +14,23 @@ readonly class RelationListDTO
     }
 
     public function getId(): string {
-        return $this->id->value();
+        return $this->id->getValue();
     }
 
     public function getTitle(): string {
-        return $this->title->value();
+        return $this->title->getValue();
     }
 
     public function getStatus(): string {
-        return $this->status->value();
+        return $this->status->getValue();
     }
 
     public function getCreatedAt(): \DateTimeImmutable {
-        return $this->createdAt->value();
+        return $this->createdAt->getValue();
     }
 
     public function getModifiedAt(): \DateTimeImmutable {
-        return $this->modifiedAt->value();
+        return $this->modifiedAt->getValue();
     }
 
 }

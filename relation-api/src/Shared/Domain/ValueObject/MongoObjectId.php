@@ -21,7 +21,7 @@ class MongoObjectId
         return new self((string)new ObjectId());
     }
 
-    public function value(): string {
+    public function getValue(): string {
         return $this->value;
     }
 

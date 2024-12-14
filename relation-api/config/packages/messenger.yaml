@@ -11,9 +11,9 @@ framework:
       async: '%env(MESSENGER_TRANSPORT_DSN)%'
 
     routing:
-      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
+#      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
 #      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: async
-      App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync
+#      App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync
 #      App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: async
 
 when@test:
@@ -22,9 +22,8 @@ when@test:
       transports:
         sync: 'sync://'
       routing:
-        App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
-        App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync
-
+#        App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
+#        App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync
 #      transports:
 #        # replace with your transport name here (e.g., my_transport: 'in-memory://')
 #        # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test

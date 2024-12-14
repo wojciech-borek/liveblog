@@ -1,22 +1,15 @@
 <?php
 
-namespace App\Relation\Domain\ValueObject\Relation;
-
-use App\Relation\Domain\Exception\Relation\InvalidRelationTitleException;
-use App\Shared\Domain\Exception\DomainException;
+namespace App\Relation\Domain\ValueObject\Post;
 
 final readonly class PostContent
 {
-    private function __construct(private string $value) {
+    public function __construct(private string $value) {
         $this->isValid($value);
     }
 
     private function isValid(string $value): void {
         if (trim($value) === '') {
-            throw new InvalidRelationTitleException('Relation title cannot be empty.');
-        }
-        if (strlen($value) > 100) {
-            throw new InvalidRelationTitleException('Relation title cannot exceed 100 characters.');
         }
     }
 
@@ -24,7 +17,7 @@ final readonly class PostContent
         return new self($value);
     }
 
-    public function value(): string {
+    public function getValue(): string {
         return $this->value;
     }
 }

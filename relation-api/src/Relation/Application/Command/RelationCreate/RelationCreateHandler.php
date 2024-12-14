@@ -26,14 +26,8 @@ readonly class RelationCreateHandler
             new RelationTitle($command->getTitle()),
             new RelationStatus(RelationStatusEnum::DRAFT->value),
             new CreatedAt(new \DateTimeImmutable()),
-            new ModifiedAt(new \DateTimeImmutable()),
-            new PostCollection()
-        );
+            new ModifiedAt(new \DateTimeImmutable()));
 
         $this->repository->save($relation);
-//        echo "Processing relation create {$id->value()}\n";
-        /**
-         * @todo send info by socket or Mercure or FrankenPHP to frontend
-         */
     }
 }

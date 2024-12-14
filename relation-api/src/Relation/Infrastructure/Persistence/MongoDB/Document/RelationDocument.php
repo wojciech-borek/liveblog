@@ -3,8 +3,9 @@
 namespace App\Relation\Infrastructure\Persistence\MongoDB\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 
-#[MongoDB\Document(db: null, collection: 'relation', repositoryClass: RelationRepository::class)]
+#[MongoDB\Document(db: null, collection: 'relation')]
 class RelationDocument
 {
     #[MongoDB\Id(strategy: 'none')]
@@ -21,6 +22,9 @@ class RelationDocument
 
     #[MongoDB\Field(type: 'date')]
     private \DateTimeInterface $modifiedAt;
+
+    #[MongoDB\ReferenceMany(targetDocument: PostDocument::class,mappedBy: "relation")]
+    private array|PersistentCollection $posts = [];
 
     public function getId(): string {
         return $this->id;
@@ -60,6 +64,10 @@ class RelationDocument
 
     public function setModifiedAt(\DateTimeInterface $modifiedAt): void {
         $this->modifiedAt = $modifiedAt;
+    }
+
+    public function getPosts(): array|PersistentCollection {
+        return $this->posts;
     }
 
 

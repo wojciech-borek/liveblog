@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Relation\Application\Command\RelationDelete;
+namespace App\Relation\Application\Command\RelationPublish;
 
-readonly class RelationDeleteCommand
+readonly class RelationPublishCommand
 {
     public function __construct(private string $id) {
     }

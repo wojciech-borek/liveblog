@@ -10,5 +10,5 @@ interface RelationRepositoryInterface
     public function getRelations($criteria): array;
     public function save(Relation $relation): void;
     public function delete(Relation $relation): void;
-    public function findById(RelationId $id): ?Relation ;
+    public function findById(RelationId $id): ?Relation;
 }

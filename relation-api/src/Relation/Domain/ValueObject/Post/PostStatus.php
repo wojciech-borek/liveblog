@@ -1,9 +1,6 @@
 <?php
 
-namespace App\Relation\Domain\ValueObject\Relation;
-
-use App\Relation\Domain\Exception\Relation\InvalidRelationTitleException;
-use App\Shared\Domain\Exception\DomainException;
+namespace App\Relation\Domain\ValueObject\Post;
 
 final readonly class PostStatus
 {
@@ -15,7 +12,7 @@ final readonly class PostStatus
 
     }
 
-    public function value(): string {
+    public function getValue(): string {
         return $this->value;
     }
 }

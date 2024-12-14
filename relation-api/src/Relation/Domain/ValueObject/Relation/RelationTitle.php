@@ -2,8 +2,7 @@
 
 namespace App\Relation\Domain\ValueObject\Relation;
 
-use App\Relation\Domain\Exception\Relation\InvalidRelationTitleException;
-use App\Shared\Domain\Exception\DomainException;
+use App\Relation\Domain\Exception\InvalidRelationTitleException;
 
 final readonly class RelationTitle
 {
@@ -20,7 +19,7 @@ final readonly class RelationTitle
         }
     }
 
-    public function value(): string {
+    public function getValue(): string {
         return $this->value;
     }
 }

@@ -11,7 +11,7 @@ final class ModifiedAt
         $this->value = $value;
     }
 
-    public function value(): \DateTimeImmutable
+    public function getValue(): \DateTimeImmutable
     {
         return $this->value;
     }
