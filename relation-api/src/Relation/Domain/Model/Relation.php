@@ -24,6 +24,8 @@ class Relation extends AggregateRoot
         private readonly CreatedAt     $createdAt,
         private readonly ModifiedAt    $modifiedAt,
     ) {
+        $this->postsPublished = new PostCollection();
+        $this->postsUnpublished = new PostCollection();
     }
 
     static function establish(
@@ -56,11 +58,15 @@ class Relation extends AggregateRoot
         $this->status = new RelationStatus(RelationStatusEnum::DRAFT->value);
     }
 
-    public function addUnpublishedPost(Post $post): void{
+    public function addPost(Post $post): void {
+        $post->getIsPublished() ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
+    }
+
+    protected function addUnpublishedPost(Post $post): void {
         $this->postsUnpublished->add($post);
     }
 
-    public function addPublishedPost(Post $post): void {
+    protected function addPublishedPost(Post $post): void {
         $this->postsPublished->add($post);
     }
 

@@ -20,15 +20,6 @@ class RelationMapper
             new CreatedAt($document->getCreatedAt()),
             new ModifiedAt($document->getModifiedAt()),
         );
-
-        foreach ($document->getPosts() as $post) {
-            $post = PostMapper::toDomain($post);
-            if ($post->getIsPublished()) {
-                $relation->addPublishedPost($post);
-            } else {
-                $relation->addUnpublishedPost($post);
-            }
-        }
         return $relation;
     }
 

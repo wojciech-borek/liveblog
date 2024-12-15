@@ -13,6 +13,15 @@ final class PostCollection
         $this->list[] = $post;
     }
 
+    /**
+     *
+     * @return Post[]
+     */
+    public function getList(): array
+    {
+        return $this->list;
+    }
+
     public function count(): int {
         return count($this->list);
     }

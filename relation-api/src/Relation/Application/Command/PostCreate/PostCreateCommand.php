@@ -2,7 +2,6 @@
 
 namespace App\Relation\Application\Command\PostCreate;
 
-
 readonly class PostCreateCommand
 {
     public function __construct(private string $relationId, private string $content) {}

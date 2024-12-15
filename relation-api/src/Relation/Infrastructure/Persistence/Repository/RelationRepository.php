@@ -5,11 +5,9 @@ namespace App\Relation\Infrastructure\Persistence\Repository;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
-use App\Relation\Infrastructure\Event\DomainEventPublisher;
 use App\Relation\Infrastructure\Persistence\MongoDB\Document\RelationDocument;
 use App\Relation\Infrastructure\Persistence\MongoDB\Mapper\RelationMapper;
 use App\Shared\Infrastructure\Persistence\Doctrine\DoctrineRepository;
-use MongoDB\BSON\ObjectId;
 
 class RelationRepository extends DoctrineRepository implements RelationRepositoryInterface
 {
@@ -24,10 +22,7 @@ class RelationRepository extends DoctrineRepository implements RelationRepositor
     }
 
     public function findById(RelationId $id): ?Relation {
-        $document = $this->repository(RelationDocument::class)
-            ->findOneBy(['id'=>new ObjectId($id->getValue())]);
-        var_dump($document);
-        die;
+        $document = $this->documentManager()->find(RelationDocument::class, $id->getValue());
 
         if (!$document) {
             return null;
@@ -36,12 +31,12 @@ class RelationRepository extends DoctrineRepository implements RelationRepositor
     }
 
     public function save(Relation $relation): void {
-        $relationDocument = RelationMapper::toDocument($relation);
-        $this->persist($relationDocument);
+        $document = RelationMapper::toDocument($relation);
+        $this->persist($document);
     }
 
     public function delete(Relation $relation): void {
-        $relationDocument = RelationMapper::toDocument($relation);
-        $this->remove($relationDocument);
+        $document = RelationMapper::toDocument($relation);
+        $this->remove($document);
     }
 }

@@ -13,8 +13,8 @@ class PostDocument
     #[MongoDB\Field(type: 'string')]
     private string $content;
 
-    #[MongoDB\ReferenceOne(targetDocument: RelationDocument::class, inversedBy: 'posts')]
-    protected $relation;
+    #[MongoDB\Field(type: 'string')]
+    protected string $relationId;
 
     #[MongoDB\Field(type: 'date')]
     private \DateTimeInterface $createdAt;
@@ -41,15 +41,15 @@ class PostDocument
     /**
      * @return mixed
      */
-    public function getRelation() {
-        return $this->relation;
+    public function getRelationId() {
+        return $this->relationId;
     }
 
     /**
-     * @param mixed $relation
+     * @param mixed $relationId
      */
-    public function setRelation($relation): void {
-        $this->relation = $relation;
+    public function setRelationId($relationId): void {
+        $this->relationId = $relationId;
     }
 
 

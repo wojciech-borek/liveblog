@@ -5,6 +5,7 @@ namespace App\Relation\Presentation\Controller;
 use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
 use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
+use App\Relation\Application\Query\GetOneRelation\GetOneRelationQuery;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
 use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Infrastructure\Bus\Query\MessengerQueryBus;
@@ -29,6 +30,13 @@ class RelationManagement extends AbstractController
         return $this->json($data);
     }
 
+    #[Route('/relations/{id}', name: 'relation_detail', methods: ['GET'])]
+    public function detail($id): JsonResponse {
+        $data = $this->messengerQueryBus->handle(new GetOneRelationQuery($id));
+
+        return $this->json($data);
+    }
+
 
     #[Route('/relations', name: 'relation_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse {
@@ -40,7 +48,7 @@ class RelationManagement extends AbstractController
             $data['title']
         ));
 
-        return $this->json(null, Response::HTTP_ACCEPTED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
     #[Route('/relations/{id}/publish', name: 'relation_publish', methods: ['POST'])]
@@ -48,7 +56,7 @@ class RelationManagement extends AbstractController
         $this->messageBus->dispatch(new RelationPublishCommand(
             $id
         ));
-        return $this->json(null, Response::HTTP_ACCEPTED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
     #[Route('/relations/{id}/create_post', name: 'relation_create_post', methods: ['POST'])]
     public function createPost(string $id,Request $request): JsonResponse {
@@ -58,7 +66,7 @@ class RelationManagement extends AbstractController
             $id,
             $data['content']
         ));
-        return $this->json(null, Response::HTTP_ACCEPTED);
+        return $this->json(null, Response::HTTP_CREATED);
     }
 
 }

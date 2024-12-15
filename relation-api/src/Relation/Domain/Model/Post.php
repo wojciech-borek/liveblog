@@ -13,14 +13,12 @@ use App\Shared\Domain\ValueObject\ModifiedAt;
 class Post
 {
     private function __construct(
-        private readonly PostId       $id,
-        private readonly RelationId   $relationId,
-        private readonly PostContent  $content,
-        private readonly CreatedAt    $createdAt,
-        private readonly ModifiedAt   $modifiedAt,
-        private readonly IsPublished  $isPublished,
-        private readonly PostPosition $positionPublished,
-        private readonly PostPosition $positionUnpublished
+        private readonly PostId      $id,
+        private readonly RelationId  $relationId,
+        private readonly PostContent $content,
+        private readonly CreatedAt   $createdAt,
+        private readonly ModifiedAt  $modifiedAt,
+        private readonly IsPublished $isPublished
     ) {
     }
 
@@ -30,11 +28,9 @@ class Post
         PostContent  $content,
         CreatedAt    $createdAt,
         ModifiedAt   $modifiedAt,
-        IsPublished  $isPublished,
-        PostPosition $positionPublished,
-        PostPosition $positionUnpublished
+        IsPublished  $isPublished
     ): Post {
-        return new self($id, $relationId, $content, $createdAt, $modifiedAt, $isPublished, $positionPublished, $positionUnpublished);
+        return new self($id, $relationId, $content, $createdAt, $modifiedAt, $isPublished);
     }
 
     public function getId(): PostId {
@@ -57,19 +53,8 @@ class Post
         return $this->modifiedAt;
     }
 
-    public function getPositionPublished(): PostPosition {
-        return $this->positionPublished;
-    }
-
-    public function getPositionUnpublished(): PostPosition {
-        return $this->positionUnpublished;
-    }
-
     public function getIsPublished(): IsPublished {
         return $this->isPublished;
     }
-
-
-
 
 }

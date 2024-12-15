@@ -8,29 +8,23 @@ use App\Shared\Domain\ValueObject\CreatedAt;
 use App\Shared\Domain\ValueObject\ModifiedAt;
 use App\Shared\Domain\ValueObject\MongoObjectId;
 
-readonly class RelationListDTO
+readonly class RelationListDTO implements \JsonSerializable
 {
-    public function __construct(private MongoObjectId $id, private RelationTitle $title, private RelationStatus $status, private CreatedAt $createdAt, private ModifiedAt $modifiedAt) {
+    public function __construct(
+        private MongoObjectId $id,
+        private RelationTitle $title,
+        private RelationStatus $status,
+        private CreatedAt $createdAt,
+        private ModifiedAt $modifiedAt
+    ) {
     }
-
-    public function getId(): string {
-        return $this->id->getValue();
+    public function jsonSerialize(): mixed {
+        return [
+            "id" => $this->id,
+            "title" => $this->title,
+            "status" => $this->status->getValue(),
+            "createdAt" => $this->createdAt->getValue(),
+            "modifiedAt" => $this->modifiedAt->getValue(),
+        ];
     }
-
-    public function getTitle(): string {
-        return $this->title->getValue();
-    }
-
-    public function getStatus(): string {
-        return $this->status->getValue();
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable {
-        return $this->createdAt->getValue();
-    }
-
-    public function getModifiedAt(): \DateTimeImmutable {
-        return $this->modifiedAt->getValue();
-    }
-
 }

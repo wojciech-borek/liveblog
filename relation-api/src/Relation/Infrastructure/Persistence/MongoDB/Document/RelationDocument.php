@@ -23,8 +23,9 @@ class RelationDocument
     #[MongoDB\Field(type: 'date')]
     private \DateTimeInterface $modifiedAt;
 
-    #[MongoDB\ReferenceMany(targetDocument: PostDocument::class,mappedBy: "relation")]
+    #[MongoDB\ReferenceMany(targetDocument: PostDocument::class)]
     private array|PersistentCollection $posts = [];
+
 
     public function getId(): string {
         return $this->id;
