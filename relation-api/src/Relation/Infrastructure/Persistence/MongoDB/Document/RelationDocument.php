@@ -23,10 +23,6 @@ class RelationDocument
     #[MongoDB\Field(type: 'date')]
     private \DateTimeInterface $modifiedAt;
 
-    #[MongoDB\ReferenceMany(targetDocument: PostDocument::class)]
-    private array|PersistentCollection $posts = [];
-
-
     public function getId(): string {
         return $this->id;
     }
@@ -65,10 +61,6 @@ class RelationDocument
 
     public function setModifiedAt(\DateTimeInterface $modifiedAt): void {
         $this->modifiedAt = $modifiedAt;
-    }
-
-    public function getPosts(): array|PersistentCollection {
-        return $this->posts;
     }
 
 

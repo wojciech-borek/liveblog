@@ -31,7 +31,7 @@ class RelationManagement extends AbstractController
     }
 
     #[Route('/relations/{id}', name: 'relation_detail', methods: ['GET'])]
-    public function detail($id): JsonResponse {
+    public function detail(string $id): JsonResponse {
         $data = $this->messengerQueryBus->handle(new GetOneRelationQuery($id));
 
         return $this->json($data);

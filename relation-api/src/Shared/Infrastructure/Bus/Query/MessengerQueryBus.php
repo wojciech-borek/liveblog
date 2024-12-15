@@ -19,8 +19,7 @@ class MessengerQueryBus
     }
 
 
-    public function handle(QueryCommandInterface $message)
-    {
+    public function handle(QueryCommandInterface $message): mixed {
         return $this->handleQuery($message);
     }
 
