@@ -7,7 +7,7 @@ use App\Relation\Domain\Model\Relation;
 
 class RelationListDTOAssembler
 {
-    public function toDTO(Relation $relation): RelationListDTO {
+    protected function toDTO(Relation $relation): RelationListDTO {
         return new RelationListDTO(
             $relation->getId(),
             $relation->getTitle(),
@@ -17,6 +17,10 @@ class RelationListDTOAssembler
         );
     }
 
+    /**
+     * @param array $relations
+     * @return array<RelationListDTO>
+     */
     public function toDTOCollection(array $relations): array {
         return array_map(
             fn(Relation $relation) => $this->toDTO($relation),

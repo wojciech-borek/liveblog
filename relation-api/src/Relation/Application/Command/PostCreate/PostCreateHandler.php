@@ -11,6 +11,7 @@ use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Post\PostContent;
 use App\Relation\Domain\ValueObject\Post\PostId;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Domain\ValueObject\CreatedAt;
 use App\Shared\Domain\ValueObject\ModifiedAt;
 use App\Shared\Infrastructure\Generator\MongoObjectIdGenerator;
@@ -23,16 +24,20 @@ readonly class PostCreateHandler
         private PostRepositoryInterface     $postRepository,
         private RelationRepositoryInterface $relationRepository,
         private AssignPostToRelation        $assignPostToRelation,
+        private MessageCommandBusInterface  $messageCommandBus
     ) {
     }
 
     public function __invoke(PostCreateCommand $command): void {
         $relationId = new RelationId($command->getRelationId());
+
         $relation = $this->relationRepository->findById($relationId);
         if (empty($relation)) {
             throw new RelationNotFoundException($relationId->getValue());
         }
+
         $this->assignPostToRelation->execute($relation);
+
         $post = Post::establish(
             new PostId(MongoObjectIdGenerator::generate()),
             $relationId,
@@ -43,6 +48,11 @@ readonly class PostCreateHandler
         );
 
         $relation->addPost($post);
+
         $this->postRepository->save($post);
+
+        foreach ($relation->getDomainEvents() as $domainEvent) {
+            $this->messageCommandBus->dispatch($domainEvent);
+        }
     }
 }

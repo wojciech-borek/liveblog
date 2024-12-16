@@ -14,7 +14,7 @@ readonly class ExceptionListener
     }
 
     public function onKernelException(ExceptionEvent $event): void {
-//        if ($this->kernel->getEnvironment() === 'dev') {
+        if ($this->kernel->getEnvironment() === 'dev') {
             $exception = $event->getThrowable();
 
             $response = new JsonResponse(
@@ -30,7 +30,7 @@ readonly class ExceptionListener
 
             $event->setResponse($response);
             return;
-//        }
-//        $this->onKernelException($event);
+        }
+        $this->onKernelException($event);
     }
 }

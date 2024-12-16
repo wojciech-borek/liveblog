@@ -3,17 +3,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat\Context;
 
-use App\Relation\Domain\Model\Relation;
 use App\Relation\Infrastructure\Persistence\MongoDB\Document\RelationDocument;
 use Behat\Behat\Context\Context;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class RelationContext implements Context
 {
     private KernelInterface $kernel;
-    private Response $response;
 
     public function __construct(KernelInterface $kernel) {
         $this->kernel = $kernel;
@@ -38,7 +35,7 @@ final class RelationContext implements Context
             ['CONTENT_TYPE' => 'application/json'],
             json_encode(['title' => $title])
         );
-        $this->response = $this->kernel->handle($request);
+        $this->kernel->handle($request);
     }
 
     /**

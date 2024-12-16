@@ -18,10 +18,10 @@ readonly class RelationListDTO implements \JsonSerializable
         private ModifiedAt $modifiedAt
     ) {
     }
-    public function jsonSerialize(): mixed {
+    public function jsonSerialize(): array {
         return [
-            "id" => $this->id,
-            "title" => $this->title,
+            "id" => $this->id->getValue(),
+            "title" => $this->title->getValue(),
             "status" => $this->status->getValue(),
             "createdAt" => $this->createdAt->getValue(),
             "modifiedAt" => $this->modifiedAt->getValue(),
