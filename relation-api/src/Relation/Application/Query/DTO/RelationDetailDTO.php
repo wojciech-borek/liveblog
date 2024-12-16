@@ -27,8 +27,8 @@ readonly class RelationDetailDTO implements \JsonSerializable
             "id" => $this->id->getValue(),
             "title" => $this->title->getValue(),
             "status" => $this->status->getValue(),
-            "createdAt" => $this->createdAt->getValue(),
-            "modifiedAt" => $this->modifiedAt->getValue(),
+            "createdAt" => $this->createdAt->getValue()->format(DATE_ATOM),
+            "modifiedAt" => $this->modifiedAt->getValue()->format(DATE_ATOM),
             "postsPublished"=>[],
             "postsUnpublished"=>[],
         ];

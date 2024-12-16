@@ -3,9 +3,7 @@
 namespace App\Tests\Application\Query\Assembler;
 
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
-use App\Relation\Application\Query\Assembler\RelationListDTOAssembler;
 use App\Relation\Application\Query\DTO\RelationDetailDTO;
-use App\Relation\Application\Query\DTO\RelationListDTO;
 use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
@@ -37,20 +35,21 @@ class RelationDetailDTOAssemblerTest extends TestCase
         $assembler = new RelationDetailDTOAssembler();
         $relationDTO = $assembler->toDTO($relation);
 
-
-
         $relationSerialize = $relationDTO->jsonSerialize();
 
         $this->assertInstanceOf(RelationDetailDTO::class, $relationDTO);
 
-        $this->assertEquals($relationId->getValue(), $relationSerialize['id']);
-        $this->assertEquals($relationTitle->getValue(), $relationSerialize['title']);
-        $this->assertEquals($relationStatus->getValue(), $relationSerialize['status']);
-        $this->assertEquals($relationCreatedAt->getValue()->format(DATE_ATOM), $relationSerialize['createdAt']->format(DATE_ATOM));
-        $this->assertEquals($relationModifiedAt->getValue()->format(DATE_ATOM), $relationSerialize['modifiedAt']->format(DATE_ATOM));
-        $this->assertIsArray($relationSerialize['postsPublished']);
-        $this->assertIsArray($relationSerialize['postsUnpublished']);
+        $expected = [
+            "id" => $relationId->getValue(),
+            "title" => $relationTitle->getValue(),
+            "status" => $relationStatus->getValue(),
+            "createdAt" => $relationCreatedAt->getValue()->format(DATE_ATOM),
+            "modifiedAt" => $relationModifiedAt->getValue()->format(DATE_ATOM),
+            "postsPublished" => [],
+            "postsUnpublished" => [],
+        ];
 
+        $this->assertEquals($expected, $relationSerialize);
 
     }
 }

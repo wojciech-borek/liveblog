@@ -3,7 +3,6 @@
 namespace App\Relation\Application\Query\Assembler;
 
 use App\Relation\Application\Query\DTO\RelationDetailDTO;
-use App\Relation\Application\Query\DTO\RelationListDTO;
 use App\Relation\Domain\Model\Relation;
 
 class RelationDetailDTOAssembler
