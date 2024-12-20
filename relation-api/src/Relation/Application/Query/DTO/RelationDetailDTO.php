@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Relation\Application\Query\DTO;
+namespace App\Relation\Application\Query\Dto;
 
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;

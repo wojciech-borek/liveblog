@@ -3,7 +3,7 @@
 namespace App\Relation\Application\Query\GetOneRelation;
 
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
-use App\Relation\Application\Query\DTO\RelationDetailDTO;
+use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Application\Service\AssignPostToRelation;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;

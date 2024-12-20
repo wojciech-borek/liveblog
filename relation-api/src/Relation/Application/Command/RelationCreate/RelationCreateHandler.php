@@ -3,6 +3,7 @@
 namespace App\Relation\Application\Command\RelationCreate;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Exception\InvalidRelationTitleException;
 use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
@@ -21,13 +22,18 @@ readonly class RelationCreateHandler
     }
 
     public function __invoke(RelationCreateCommand $command): void {
-        $relation = Relation::establish(
-            new RelationId(MongoObjectIdGenerator::generate()),
-            new RelationTitle($command->getTitle()),
-            new RelationStatus(RelationStatusEnum::DRAFT->value),
-            new CreatedAt(new \DateTimeImmutable()),
-            new ModifiedAt(new \DateTimeImmutable()));
+        try {
+            $relation = Relation::establish(
+                new RelationId(MongoObjectIdGenerator::generate()),
+                new RelationTitle($command->getTitle()),
+                new RelationStatus(RelationStatusEnum::DRAFT->value),
+                new CreatedAt(new \DateTimeImmutable()),
+                new ModifiedAt(new \DateTimeImmutable()));
 
-        $this->repository->save($relation);
+            $this->repository->save($relation);
+
+        }catch (InvalidRelationTitleException $e){
+throw new InvalidRelationTitleException($e->getMessage()) ;
+        }
     }
 }

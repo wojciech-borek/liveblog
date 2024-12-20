@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   relation-api:
     container_name: relation-api
@@ -8,7 +6,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./relation-api:/var/www/html:cached
+      - ./relation-api:/var/www/html/relation-api:cached
     depends_on:
       - mongo
 
@@ -54,6 +52,19 @@ services:
     networks:
       - app_network
 
+#  relation-generator:
+#    build: relation-generator/docker
+#    container_name: relation-generator
+#    volumes:
+#      - ./relation-generator:/var/www/html/relation-generator:cached
+#    ports:
+#      - "8000:8000"
+#    environment:
+#      - APP_ENV=production
+#      - PYTHONUNBUFFERED=1
+#    tty: true
+#    networks:
+#      - app_network
 
 networks:
   app_network:

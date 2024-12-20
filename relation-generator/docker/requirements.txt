@@ -1,0 +1,12 @@
+torch
+torchvision
+torchaudio
+transformers
+openai-whisper
+spacy
+requests
+summa
+huggingface-hub
+blobfile
+protobuf
+sentencepiece

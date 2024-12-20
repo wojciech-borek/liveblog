@@ -2,7 +2,7 @@
 
 namespace App\Relation\Application\Query\Assembler;
 
-use App\Relation\Application\Query\DTO\RelationDetailDTO;
+use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Domain\Model\Relation;
 
 class RelationDetailDTOAssembler

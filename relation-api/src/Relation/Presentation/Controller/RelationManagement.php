@@ -7,6 +7,9 @@ use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
 use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
 use App\Relation\Application\Query\GetOneRelation\GetOneRelationQuery;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
+use App\Relation\Domain\Exception\InvalidRelationStatusException;
+use App\Relation\Domain\Exception\InvalidRelationTitleException;
+use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Infrastructure\Bus\Query\MessengerQueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,7 +36,6 @@ class RelationManagement extends AbstractController
     #[Route('/relations/{id}', name: 'relation_detail', methods: ['GET'])]
     public function detail(string $id): JsonResponse {
         $data = $this->messengerQueryBus->handle(new GetOneRelationQuery($id));
-
         return $this->json($data);
     }
 
@@ -41,25 +43,29 @@ class RelationManagement extends AbstractController
     #[Route('/relations', name: 'relation_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
-        /**
-         * @todo add validation
-         */
-        $this->messageBus->dispatch(new RelationCreateCommand(
-            $data['title']
-        ));
+        try {
+            $this->messageBus->dispatch(new RelationCreateCommand(
+                $data['title']
+            ));
+        } catch (InvalidRelationStatusException|InvalidRelationTitleException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
 
         return $this->json(null, Response::HTTP_CREATED);
     }
 
     #[Route('/relations/{id}/publish', name: 'relation_publish', methods: ['POST'])]
     public function publish(string $id): JsonResponse {
-        $this->messageBus->dispatch(new RelationPublishCommand(
-            $id
-        ));
+        try {
+            $this->messageBus->dispatch(new RelationPublishCommand($id));
+        } catch (RelationNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        }
         return $this->json(null, Response::HTTP_CREATED);
     }
+
     #[Route('/relations/{id}/create_post', name: 'relation_create_post', methods: ['POST'])]
-    public function createPost(string $id,Request $request): JsonResponse {
+    public function createPost(string $id, Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         $this->messageBus->dispatch(new PostCreateCommand(

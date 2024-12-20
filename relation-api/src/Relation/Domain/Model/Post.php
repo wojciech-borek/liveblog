@@ -5,7 +5,6 @@ namespace App\Relation\Domain\Model;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Post\PostContent;
 use App\Relation\Domain\ValueObject\Post\PostId;
-use App\Relation\Domain\ValueObject\Post\PostPosition;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Shared\Domain\ValueObject\CreatedAt;
 use App\Shared\Domain\ValueObject\ModifiedAt;

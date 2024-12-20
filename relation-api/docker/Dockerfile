@@ -1,8 +1,5 @@
 FROM php:8.3-apache
 
-ENV http_proxy 'http://proxy.tvp.pl:8080'
-ENV https_proxy 'http://proxy.tvp.pl:8080'
-
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -31,7 +28,7 @@ RUN a2enmod rewrite
 COPY config/vhosts/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/relation-api
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh

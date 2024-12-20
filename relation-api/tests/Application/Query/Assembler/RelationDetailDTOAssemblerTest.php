@@ -3,7 +3,7 @@
 namespace App\Tests\Application\Query\Assembler;
 
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
-use App\Relation\Application\Query\DTO\RelationDetailDTO;
+use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\ValueObject\Relation\RelationId;

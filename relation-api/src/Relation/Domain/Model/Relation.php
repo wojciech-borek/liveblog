@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Relation\PostCollection;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
@@ -46,14 +47,14 @@ class Relation extends AggregateRoot
 
     public function publish(): void {
         if ($this->status->isPublished()) {
-            throw new \DomainException('Relation is already published.');
+            throw new InvalidRelationStatusException('Relation is already published.');
         }
         $this->status = new RelationStatus(RelationStatusEnum::PUBLISHED->value);
     }
 
     public function unpublish(): void {
         if ($this->status->isDraft()) {
-            throw new \DomainException('Relation is already draft.');
+            throw new InvalidRelationStatusException('Relation is already draft.');
         }
         $this->status = new RelationStatus(RelationStatusEnum::DRAFT->value);
     }

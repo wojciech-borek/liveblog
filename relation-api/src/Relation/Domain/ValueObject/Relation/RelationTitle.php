@@ -11,7 +11,7 @@ final readonly class RelationTitle
     }
 
     private function isValid(string $value): void {
-        if (trim($value) === '') {
+        if (empty(trim($value))) {
             throw new InvalidRelationTitleException('Relation title cannot be empty.');
         }
         if (strlen($value) > 255) {
