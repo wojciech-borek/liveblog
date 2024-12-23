@@ -5,7 +5,6 @@ namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
-use App\Relation\Domain\ValueObject\Relation\PostCollection;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;

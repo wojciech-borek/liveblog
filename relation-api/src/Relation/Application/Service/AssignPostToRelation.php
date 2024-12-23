@@ -7,7 +7,7 @@ use App\Relation\Domain\Repository\PostRepositoryInterface;
 
 class AssignPostToRelation
 {
-    public function __construct(private PostRepositoryInterface $postRepository) {
+    public function __construct(private readonly PostRepositoryInterface $postRepository) {
     }
 
     public function execute(Relation $relation): void {

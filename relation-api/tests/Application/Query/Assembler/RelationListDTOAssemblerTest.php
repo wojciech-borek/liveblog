@@ -62,14 +62,14 @@ class RelationListDTOAssemblerTest extends TestCase
         $this->assertEquals($relation1Id->getValue(), $relation1Serialize['id']);
         $this->assertEquals($relation1Title->getValue(), $relation1Serialize['title']);
         $this->assertEquals($relation1Status->getValue(), $relation1Serialize['status']);
-        $this->assertEquals($relation1CreatedAt->getValue()->format(DATE_ATOM), $relation1Serialize['createdAt']->format(DATE_ATOM));
-        $this->assertEquals($relation1ModifiedAt->getValue()->format(DATE_ATOM), $relation1Serialize['modifiedAt']->format(DATE_ATOM));
+        $this->assertEquals($relation1CreatedAt->getValue()->format(DATE_ATOM), $relation1Serialize['createdAt']);
+        $this->assertEquals($relation1ModifiedAt->getValue()->format(DATE_ATOM), $relation1Serialize['modifiedAt']);
 
 
         $this->assertEquals($relation2Id->getValue(), $relation2Serialize['id']);
         $this->assertEquals($relation2Title->getValue(), $relation2Serialize['title']);
         $this->assertEquals($relation2Status->getValue(), $relation2Serialize['status']);
-        $this->assertEquals($relation2CreatedAt->getValue()->format(DATE_ATOM), $relation2Serialize['createdAt']->format(DATE_ATOM));
-        $this->assertEquals($relation2ModifiedAt->getValue()->format(DATE_ATOM), $relation2Serialize['modifiedAt']->format(DATE_ATOM));
+        $this->assertEquals($relation2CreatedAt->getValue()->format(DATE_ATOM), $relation2Serialize['createdAt']);
+        $this->assertEquals($relation2ModifiedAt->getValue()->format(DATE_ATOM), $relation2Serialize['modifiedAt']);
     }
 }

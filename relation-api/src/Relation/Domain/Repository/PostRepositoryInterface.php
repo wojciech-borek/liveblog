@@ -3,7 +3,7 @@
 namespace App\Relation\Domain\Repository;
 
 use App\Relation\Domain\Model\Post;
-use App\Relation\Domain\ValueObject\Relation\PostCollection;
+use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 
 interface PostRepositoryInterface

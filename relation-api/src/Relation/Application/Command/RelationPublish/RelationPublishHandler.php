@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 readonly class RelationPublishHandler
 {
-    public function __construct(private RelationRepositoryInterface $repository, private readonly MessageCommandBusInterface $messageBus) {
+    public function __construct(private RelationRepositoryInterface $repository) {
     }
 
     public function __invoke(RelationPublishCommand $command): void {
@@ -23,10 +23,10 @@ readonly class RelationPublishHandler
         $relation->publish();
         $this->repository->save($relation);
 
-        foreach ($relation->getDomainEvents() as $event) {
-            $this->messageBus->dispatch($event);
-        }
-
-        $relation->clearDomainEvents();
+//        foreach ($relation->getDomainEvents() as $event) {
+//            $this->messageBus->dispatch($event);
+//        }
+//
+//        $relation->clearDomainEvents();
     }
 }

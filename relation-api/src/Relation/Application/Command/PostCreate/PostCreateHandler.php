@@ -23,8 +23,7 @@ readonly class PostCreateHandler
     public function __construct(
         private PostRepositoryInterface     $postRepository,
         private RelationRepositoryInterface $relationRepository,
-        private AssignPostToRelation        $assignPostToRelation,
-        private MessageCommandBusInterface  $messageCommandBus
+        private AssignPostToRelation        $assignPostToRelation
     ) {
     }
 
@@ -50,9 +49,9 @@ readonly class PostCreateHandler
         $relation->addPost($post);
 
         $this->postRepository->save($post);
-
-        foreach ($relation->getDomainEvents() as $domainEvent) {
-            $this->messageCommandBus->dispatch($domainEvent);
-        }
+//        foreach ($relation->getDomainEvents() as $domainEvent) {
+//            $this->messageCommandBus->dispatch($domainEvent);
+//        }
+//        $relation->clearDomainEvents();
     }
 }

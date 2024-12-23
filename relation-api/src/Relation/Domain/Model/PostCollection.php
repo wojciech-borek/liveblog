@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Relation\Domain\ValueObject\Relation;
-
-use App\Relation\Domain\Model\Post;
+namespace App\Relation\Domain\Model;
 
 final class PostCollection
 {
