@@ -2,6 +2,7 @@
 
 namespace App\Relation\Application\Query\Dto;
 
+use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;
 use App\Shared\Domain\ValueObject\CreatedAt;
@@ -16,7 +17,9 @@ readonly class RelationDetailDTO implements \JsonSerializable
         private RelationTitle  $title,
         private RelationStatus $status,
         private CreatedAt      $createdAt,
-        private ModifiedAt     $modifiedAt
+        private ModifiedAt     $modifiedAt,
+        private array          $postsPublished,
+        private array          $postsUnpublished,
     ) {
 
     }
@@ -29,8 +32,8 @@ readonly class RelationDetailDTO implements \JsonSerializable
             "status" => $this->status->getValue(),
             "createdAt" => $this->createdAt->getValue()->format(DATE_ATOM),
             "modifiedAt" => $this->modifiedAt->getValue()->format(DATE_ATOM),
-            "postsPublished"=>[],
-            "postsUnpublished"=>[],
+            "postsPublished" => $this->postsPublished,
+            "postsUnpublished" => $this->postsUnpublished,
         ];
     }
 }

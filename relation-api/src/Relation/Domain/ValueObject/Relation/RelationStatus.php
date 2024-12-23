@@ -21,11 +21,9 @@ final readonly class RelationStatus
         return $this->value;
     }
 
-    public function isPublished(): bool {
-        return $this->value === RelationStatusEnum::PUBLISHED->value;
+    public function equals(RelationStatus $relationStatus): bool {
+        return $this->value === $relationStatus->getValue();
     }
 
-    public function isDraft(): bool {
-        return $this->value === RelationStatusEnum::DRAFT->value;
-    }
+
 }

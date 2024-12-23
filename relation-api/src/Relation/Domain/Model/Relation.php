@@ -45,21 +45,23 @@ class Relation extends AggregateRoot
     }
 
     public function publish(): void {
-        if ($this->status->isPublished()) {
+        $newStatus = new RelationStatus(RelationStatusEnum::PUBLISHED->value);
+        if ($this->status->equals($newStatus)) {
             throw new InvalidRelationStatusException('Relation is already published.');
         }
-        $this->status = new RelationStatus(RelationStatusEnum::PUBLISHED->value);
+        $this->status = $newStatus;
     }
 
     public function unpublish(): void {
-        if ($this->status->isDraft()) {
+        $newStatus = new RelationStatus(RelationStatusEnum::DRAFT->value);
+        if ($this->status->equals($newStatus)) {
             throw new InvalidRelationStatusException('Relation is already draft.');
         }
-        $this->status = new RelationStatus(RelationStatusEnum::DRAFT->value);
+        $this->status = $newStatus;
     }
 
     public function addPost(Post $post): void {
-        $post->getIsPublished() ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
+        $post->getIsPublished()->getValue() ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
     }
 
     protected function addUnpublishedPost(Post $post): void {

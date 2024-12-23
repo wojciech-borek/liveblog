@@ -5,6 +5,7 @@ namespace App\Relation\Application\Query\GetOneRelation;
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
 use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Application\Service\AssignPostToRelation;
+use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +23,9 @@ readonly class GetOneRelationHandler
     public function __invoke(GetOneRelationQuery $query): RelationDetailDTO {
         $relationId = new RelationId($query->getId());
         $relation = $this->repository->findById($relationId);
-
+        if(null === $relation){
+            throw new RelationNotFoundException($relationId->getValue());
+        }
         $this->assignPostToRelation->execute($relation);
 
         return $this->relationDetailDTOAssembler->toDTO($relation);
