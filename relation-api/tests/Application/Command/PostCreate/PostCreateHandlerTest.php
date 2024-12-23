@@ -4,7 +4,8 @@ namespace App\Tests\Application\Command\PostCreate;
 
 use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\PostCreate\PostCreateHandler;
-use App\Relation\Application\Service\AssignPostToRelation;
+use App\Relation\Application\Service\AssignPostToRelationService;
+use App\Relation\Application\Service\RelationService;
 use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\Model\Post;
 use App\Relation\Domain\Model\Relation;
@@ -19,18 +20,16 @@ class PostCreateHandlerTest extends TestCase
     private PostCreateHandler $handler;
     private MockObject $postRepository;
     private MockObject $relationRepository;
-    private MockObject $assignPostToRelation;
+    private MockObject $relationService;
 
     protected function setUp(): void
     {
         $this->postRepository = $this->createMock(PostRepositoryInterface::class);
-        $this->relationRepository = $this->createMock(RelationRepositoryInterface::class);
-        $this->assignPostToRelation = $this->createMock(AssignPostToRelation::class);
+        $this->relationService = $this->createMock(RelationService::class);
 
         $this->handler = new PostCreateHandler(
             $this->postRepository,
-            $this->relationRepository,
-            $this->assignPostToRelation
+            $this->relationService
         );
     }
 
@@ -38,9 +37,9 @@ class PostCreateHandlerTest extends TestCase
     {
         $command = new PostCreateCommand('507f1f77bcf86cd799439011', 'Lorem Ipsum');
 
-        $this->relationRepository
+        $this->relationService
             ->expects($this->once())
-            ->method('findById')
+            ->method('getRelationByIdWithPosts')
             ->willReturn(null);
 
         $this->expectException(RelationNotFoundException::class);
@@ -54,9 +53,9 @@ class PostCreateHandlerTest extends TestCase
 
         $relation = $this->createMock(Relation::class);
 
-        $this->relationRepository
+        $this->relationService
             ->expects($this->once())
-            ->method('findById')
+            ->method('getRelationByIdWithPosts')
             ->with($relationId)
             ->willReturn($relation);
 
@@ -65,10 +64,6 @@ class PostCreateHandlerTest extends TestCase
             ->method('addPost')
             ->with($this->isInstanceOf(Post::class));
 
-        $this->assignPostToRelation
-            ->expects($this->once())
-            ->method('execute')
-            ->with($relation);
 
         $this->postRepository
             ->expects($this->once())

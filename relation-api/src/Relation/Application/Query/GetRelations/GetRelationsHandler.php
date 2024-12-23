@@ -4,13 +4,13 @@ namespace App\Relation\Application\Query\GetRelations;
 
 use App\Relation\Application\Query\Assembler\RelationListDTOAssembler;
 use App\Relation\Application\Query\Dto\RelationListDTO;
-use App\Relation\Domain\Repository\RelationRepositoryInterface;
+use App\Relation\Application\Service\RelationService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 readonly class GetRelationsHandler
 {
-    public function __construct(private RelationRepositoryInterface $repository, private RelationListDTOAssembler $relationDTOAssembler) {
+    public function __construct(private RelationService $relationService, private RelationListDTOAssembler $relationDTOAssembler) {
     }
 
     /**
@@ -18,7 +18,7 @@ readonly class GetRelationsHandler
      * @return array<RelationListDTO>
      */
     public function __invoke(GetRelationsQuery $query): array {
-        $items = $this->repository->getRelations([]);
+        $items = $this->relationService->getRelations([]);
         return $this->relationDTOAssembler->toDTOCollection($items);
     }
 }

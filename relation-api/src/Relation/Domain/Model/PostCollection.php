@@ -2,7 +2,7 @@
 
 namespace App\Relation\Domain\Model;
 
-final class PostCollection
+class PostCollection
 {
     /** @var Post[] */
     private array $list = [];

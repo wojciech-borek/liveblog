@@ -2,9 +2,12 @@
 
 namespace App\Tests\Application\Query\Assembler;
 
+use App\Relation\Application\Query\Assembler\PostListDTOAssembler;
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
 use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Model\Post;
+use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
@@ -31,10 +34,13 @@ class RelationDetailDTOAssemblerTest extends TestCase
         $relation->method('getCreatedAt')->willReturn($relationCreatedAt);
         $relation->method('getModifiedAt')->willReturn($relationModifiedAt);
 
+        $postListMock = $this->createMock(PostCollection::class);
+        $postListMock->method('getList')->willReturn([]);
 
-        $assembler = new RelationDetailDTOAssembler();
+        $postListDTOAssemblerMock = $this->createMock(PostListDTOAssembler::class);
+
+        $assembler = new RelationDetailDTOAssembler($postListDTOAssemblerMock);
         $relationDTO = $assembler->toDTO($relation);
-
         $relationSerialize = $relationDTO->jsonSerialize();
 
         $this->assertInstanceOf(RelationDetailDTO::class, $relationDTO);
