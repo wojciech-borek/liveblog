@@ -14,6 +14,10 @@ class IsPublished
         return $this->value;
     }
 
+    public function equals(IsPublished $isPublished): bool {
+        return $this->value === $isPublished->getValue();
+    }
+
     public function toggle(): self {
         return new self(!$this->value);
     }

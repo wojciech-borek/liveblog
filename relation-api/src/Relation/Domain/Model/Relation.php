@@ -5,6 +5,7 @@ namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
+use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;
@@ -22,7 +23,7 @@ class Relation extends AggregateRoot
         private readonly RelationTitle $title,
         private RelationStatus         $status,
         private readonly CreatedAt     $createdAt,
-        private readonly ModifiedAt    $modifiedAt,
+        private readonly ModifiedAt    $modifiedAt
     ) {
         $this->postsPublished = new PostCollection();
         $this->postsUnpublished = new PostCollection();
@@ -61,7 +62,7 @@ class Relation extends AggregateRoot
     }
 
     public function addPost(Post $post): void {
-        $post->getIsPublished()->getValue() ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
+        $post->getIsPublished()->equals(new IsPublished(true)) ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
     }
 
     protected function addUnpublishedPost(Post $post): void {
