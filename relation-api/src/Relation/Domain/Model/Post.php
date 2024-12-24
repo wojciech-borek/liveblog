@@ -22,12 +22,12 @@ class Post
     }
 
     static function establish(
-        PostId       $id,
-        RelationId   $relationId,
-        PostContent  $content,
-        CreatedAt    $createdAt,
-        ModifiedAt   $modifiedAt,
-        IsPublished  $isPublished
+        PostId      $id,
+        RelationId  $relationId,
+        PostContent $content,
+        CreatedAt   $createdAt,
+        ModifiedAt  $modifiedAt,
+        IsPublished $isPublished
     ): Post {
         return new self($id, $relationId, $content, $createdAt, $modifiedAt, $isPublished);
     }

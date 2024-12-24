@@ -59,6 +59,19 @@ class Relation extends AggregateRoot
         $this->status = $newStatus;
     }
 
+    public function publishPost(Post $post): void {
+        /**
+         * - find in unpublished collection (if not exists throw exception)
+         * - change isPublished to true (if is true throw exception)
+         * - move to published collection
+         * - reorder published list
+         * - add domain event post publish
+         */
+    }
+    public function unpublishPost(Post $post): void {
+
+    }
+
     public function unpublish(): void {
         $newStatus = new RelationStatus(RelationStatusEnum::DRAFT->value);
         if ($this->status->equals($newStatus)) {
