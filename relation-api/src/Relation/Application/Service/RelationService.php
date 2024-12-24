@@ -26,6 +26,9 @@ class RelationService
         }
         return $relation;
     }
+    public function getRelation(RelationId $relationId): ?Relation {
+        return $this->relationRepository->findById($relationId);
+    }
 
     public function getRelations($criteria): array {
         return $this->relationRepository->getRelations($criteria);

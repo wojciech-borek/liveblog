@@ -4,6 +4,7 @@ namespace App\Relation\Presentation\Controller;
 
 use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
+use App\Relation\Application\Command\RelationDelete\RelationDeleteCommand;
 use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
 use App\Relation\Application\Query\GetOneRelation\GetOneRelationQuery;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
@@ -61,7 +62,17 @@ class RelationManagement extends AbstractController
         } catch (RelationNotFoundException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
         }
-        return $this->json(null, Response::HTTP_CREATED);
+        return $this->json(null, Response::HTTP_OK);
+    }
+
+    #[Route('/relations/{id}', name: 'relation_delete', methods: ['DELETE'])]
+    public function delete(string $id): JsonResponse {
+        try {
+            $this->messageBus->dispatch(new RelationDeleteCommand($id));
+        } catch (RelationNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        }
+        return $this->json(null, Response::HTTP_OK);
     }
 
     #[Route('/relations/{id}/create_post', name: 'relation_create_post', methods: ['POST'])]

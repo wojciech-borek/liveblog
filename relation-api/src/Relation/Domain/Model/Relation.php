@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
@@ -43,6 +44,11 @@ class Relation extends AggregateRoot
             $createdAt,
             $modifiedAt
         );
+    }
+
+    public function delete(): void
+    {
+        $this->domainEvents[] = new RelationDeletedEvent($this->getId()->getValue());
     }
 
     public function publish(): void {

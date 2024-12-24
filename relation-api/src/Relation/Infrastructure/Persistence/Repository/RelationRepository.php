@@ -35,8 +35,8 @@ class RelationRepository extends DoctrineRepository implements RelationRepositor
         $this->persist($document);
     }
 
-    public function delete(Relation $relation): void {
-        $document = RelationMapper::toDocument($relation);
+    public function delete(RelationId $id): void {
+        $document = $this->documentManager()->find(RelationDocument::class, $id->getValue());
         $this->remove($document);
     }
 }

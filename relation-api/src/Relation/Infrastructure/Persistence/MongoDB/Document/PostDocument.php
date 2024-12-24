@@ -22,11 +22,11 @@ class PostDocument
     #[MongoDB\Field(type: 'date')]
     private \DateTimeInterface $modifiedAt;
 
-    #[MongoDB\Field(type: 'integer')]
+    #[MongoDB\Field(type: 'int')]
     private int $positionPublished;
-    #[MongoDB\Field(type: 'integer')]
+    #[MongoDB\Field(type: 'int')]
     private int $positionUnpublished;
-    #[MongoDB\Field(type: 'boolean')]
+    #[MongoDB\Field(type: 'bool')]
     private bool $isPublished;
 
 
