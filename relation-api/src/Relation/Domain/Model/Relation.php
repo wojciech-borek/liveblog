@@ -5,8 +5,10 @@ namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Event\RelationDeletedEvent;
+use App\Relation\Domain\Event\RelationRenumberedPostsEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
+use App\Relation\Domain\ValueObject\Post\PostPosition;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Domain\ValueObject\Relation\RelationStatus;
 use App\Relation\Domain\ValueObject\Relation\RelationTitle;
@@ -46,51 +48,48 @@ class Relation extends AggregateRoot
         );
     }
 
-    public function delete(): void
-    {
-        $this->domainEvents[] = new RelationDeletedEvent($this->getId()->getValue());
+    public function delete(): void {
+        $this->raiseEvent(new RelationDeletedEvent($this->getId()->getValue()));
     }
 
-    public function publish(): void {
-        $newStatus = new RelationStatus(RelationStatusEnum::PUBLISHED->value);
+    public function toggleIsPublishedPost(Post $post): void {
+        $currentCollection = $this->selectCollection($post);
+        $currentCollection->removeFromListsById($post->getId());
+        $currentCollection->toggleIsPublishedPost($post);
+        $this->addPost($post);
+        $this->renumberPosts();
+    }
+
+    private function renumberPosts(): void {
+        $updatedPosts = array_merge(
+            $this->postsPublished->renumber(),
+            $this->postsUnpublished->renumber()
+        );
+        $this->raiseEvent(new RelationRenumberedPostsEvent($this->id->getValue(), $updatedPosts));
+    }
+
+    public function changeStatus(string $status): void {
+        $status = RelationStatusEnum::tryFrom($status);
+        $newStatus = new RelationStatus($status->value);
         if ($this->status->equals($newStatus)) {
-            throw new InvalidRelationStatusException('Relation is already published.');
-        }
-        $this->status = $newStatus;
-    }
-
-    public function publishPost(Post $post): void {
-        /**
-         * - find in unpublished collection (if not exists throw exception)
-         * - change isPublished to true (if is true throw exception)
-         * - move to published collection
-         * - reorder published list
-         * - add domain event post publish
-         */
-    }
-    public function unpublishPost(Post $post): void {
-
-    }
-
-    public function unpublish(): void {
-        $newStatus = new RelationStatus(RelationStatusEnum::DRAFT->value);
-        if ($this->status->equals($newStatus)) {
-            throw new InvalidRelationStatusException('Relation is already draft.');
+            throw new InvalidRelationStatusException('Relation has the same status');
         }
         $this->status = $newStatus;
     }
 
     public function addPost(Post $post): void {
-        $post->getIsPublished()->equals(new IsPublished(true)) ? $this->addPublishedPost($post) : $this->addUnpublishedPost($post);
+        $collection = $this->selectCollection($post);
+        $post->setPosition(new PostPosition($collection->count() + 1));
+        $collection->add($post);
     }
 
-    protected function addUnpublishedPost(Post $post): void {
-        $this->postsUnpublished->add($post);
+    private function selectCollection(Post $post): PostCollection {
+        return $post->getIsPublished()->equals(new IsPublished(true))
+            ? $this->postsPublished
+            : $this->postsUnpublished;
+
     }
 
-    protected function addPublishedPost(Post $post): void {
-        $this->postsPublished->add($post);
-    }
 
     public function getId(): RelationId {
         return $this->id;

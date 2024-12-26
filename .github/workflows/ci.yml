@@ -1,0 +1,55 @@
+name: Liveblog CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  liveblog-api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Copy .env.test.local
+        working-directory: relation-api
+        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: relation-api/vendor
+          key: composer-${{ hashFiles('relation-api/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install Dependencies
+        working-directory: relation-api
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Create Database
+        working-directory: relation-api
+        run: |
+          mkdir -p data
+          sqlite3 data/database.sqlite "VACUUM;"
+
+      - name: Run PHPStan
+        working-directory: relation-api
+        run: vendor/bin/phpstan analyse src --no-progress
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        working-directory: relation-api
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
+        run: vendor/bin/phpunit --coverage-text

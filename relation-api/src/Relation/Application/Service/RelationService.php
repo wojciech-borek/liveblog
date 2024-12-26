@@ -30,6 +30,9 @@ class RelationService
         return $this->relationRepository->findById($relationId);
     }
 
+    /**
+     * @return array<Relation>
+     */
     public function getRelations($criteria): array {
         return $this->relationRepository->getRelations($criteria);
     }

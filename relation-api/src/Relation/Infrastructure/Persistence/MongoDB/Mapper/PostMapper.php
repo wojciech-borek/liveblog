@@ -19,6 +19,7 @@ class PostMapper
             new PostId($document->getId()),
             new RelationId($document->getRelationId()),
             new PostContent($document->getContent()),
+            new PostPosition($document->getPosition()),
             new CreatedAt($document->getCreatedAt()),
             new ModifiedAt($document->getModifiedAt()),
             new IsPublished($document->isPublished())
@@ -31,6 +32,7 @@ class PostMapper
         $document->setRelationId($post->getRelationId()->getValue());
         $document->setContent($post->getContent()->getValue());
         $document->setCreatedAt($post->getCreatedAt()->getValue());
+        $document->setPosition($post->getPosition()->getValue());
         $document->setModifiedAt($post->getModifiedAt()->getValue());
         $document->setIsPublished($post->getIsPublished()->getValue());
 

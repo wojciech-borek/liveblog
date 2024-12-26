@@ -2,7 +2,7 @@
 
 namespace App\Relation\Application\EventHandler;
 
-use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
+use App\Relation\Application\Command\RelationChangeStatus\RelationChangeStatusCommand;
 use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\Repository\PostRepositoryInterface;

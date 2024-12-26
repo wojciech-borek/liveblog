@@ -4,7 +4,12 @@ namespace App\Relation\Application\Command\PostCreate;
 
 readonly class PostCreateCommand
 {
-    public function __construct(private string $relationId, private string $content) {}
+    public function __construct(
+        private string $relationId,
+        private string $content,
+        private bool   $isPublished,
+    ) {
+    }
 
     public function getContent(): string {
         return $this->content;
@@ -14,6 +19,9 @@ readonly class PostCreateCommand
         return $this->relationId;
     }
 
+    public function isPublished(): bool {
+        return $this->isPublished;
+    }
 
 
 }

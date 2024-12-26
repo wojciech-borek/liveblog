@@ -2,10 +2,9 @@
 
 namespace App\Relation\Presentation\Controller;
 
-use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\RelationCreate\RelationCreateCommand;
 use App\Relation\Application\Command\RelationDelete\RelationDeleteCommand;
-use App\Relation\Application\Command\RelationPublish\RelationPublishCommand;
+use App\Relation\Application\Command\RelationChangeStatus\RelationChangeStatusCommand;
 use App\Relation\Application\Query\GetOneRelation\GetOneRelationQuery;
 use App\Relation\Application\Query\GetRelations\GetRelationsQuery;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
@@ -55,11 +54,12 @@ class RelationManagement extends AbstractController
         return $this->json(null, Response::HTTP_CREATED);
     }
 
-    #[Route('/relations/{id}/publish', name: 'relation_publish', methods: ['POST'])]
-    public function publish(string $id): JsonResponse {
+    #[Route('/relations/{id}/change_status', name: 'relation_change_status', methods: ['POST'])]
+    public function publish(string $id, Request $request): JsonResponse {
+        $data = json_decode($request->getContent(), true);
         try {
-            $this->messageBus->dispatch(new RelationPublishCommand($id));
-        } catch (RelationNotFoundException $exception) {
+            $this->messageBus->dispatch(new RelationChangeStatusCommand($id, $data['status']));
+        } catch (RelationNotFoundException|InvalidRelationStatusException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
         }
         return $this->json(null, Response::HTTP_OK);
@@ -75,15 +75,5 @@ class RelationManagement extends AbstractController
         return $this->json(null, Response::HTTP_OK);
     }
 
-    #[Route('/relations/{id}/create_post', name: 'relation_create_post', methods: ['POST'])]
-    public function createPost(string $id, Request $request): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        $this->messageBus->dispatch(new PostCreateCommand(
-            $id,
-            $data['content']
-        ));
-        return $this->json(null, Response::HTTP_CREATED);
-    }
 
 }

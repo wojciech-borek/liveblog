@@ -23,9 +23,8 @@ class PostDocument
     private \DateTimeInterface $modifiedAt;
 
     #[MongoDB\Field(type: 'int')]
-    private int $positionPublished;
-    #[MongoDB\Field(type: 'int')]
-    private int $positionUnpublished;
+    private int $position;
+
     #[MongoDB\Field(type: 'bool')]
     private bool $isPublished;
 
@@ -77,21 +76,14 @@ class PostDocument
         $this->content = $content;
     }
 
-    public function getPositionPublished(): int {
-        return $this->positionPublished;
+    public function getPosition(): int {
+        return $this->position;
     }
 
-    public function setPositionPublished(int $positionPublished): void {
-        $this->positionPublished = $positionPublished;
+    public function setPosition(int $position): void {
+        $this->position = $position;
     }
 
-    public function getPositionUnpublished(): int {
-        return $this->positionUnpublished;
-    }
-
-    public function setPositionUnpublished(int $positionUnpublished): void {
-        $this->positionUnpublished = $positionUnpublished;
-    }
 
     public function isPublished(): bool {
         return $this->isPublished;

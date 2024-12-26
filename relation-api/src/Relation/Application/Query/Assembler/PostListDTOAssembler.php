@@ -19,7 +19,7 @@ class PostListDTOAssembler
 
     /**
      * @param array $posts
-     * @return array<RelationListDTO>
+     * @return array<PostDTO>
      */
     public function toDTOCollection(array $posts): array {
         return array_map(

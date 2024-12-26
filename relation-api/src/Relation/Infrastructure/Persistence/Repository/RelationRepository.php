@@ -8,10 +8,16 @@ use App\Relation\Domain\ValueObject\Relation\RelationId;
 use App\Relation\Infrastructure\Persistence\MongoDB\Document\RelationDocument;
 use App\Relation\Infrastructure\Persistence\MongoDB\Mapper\RelationMapper;
 use App\Shared\Infrastructure\Persistence\Doctrine\DoctrineRepository;
+use Doctrine\ODM\MongoDB\MongoDBException;
 
 class RelationRepository extends DoctrineRepository implements RelationRepositoryInterface
 {
 
+    /**
+     * @param $criteria
+     * @return array<Relation>
+     * @throws MongoDBException
+     */
     public function getRelations($criteria): array {
         $qb = $this->repository(RelationDocument::class)->createQueryBuilder();
         $relations = [];

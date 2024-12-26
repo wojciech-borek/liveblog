@@ -13,6 +13,8 @@ interface PostRepositoryInterface
 
     public function delete(PostId $id): void;
 
+    public function findById(PostId $id): ?Post;
+
     public function findByRelationId(RelationId $relationId): PostCollection;
 
 
