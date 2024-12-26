@@ -2,7 +2,9 @@
 
 namespace App\Relation\Domain\Event;
 
-final readonly class RelationRenumberedPostsEvent
+use App\Shared\Domain\Event\DomainEventInterface;
+
+final readonly class RelationRenumberedPostsEvent implements DomainEventInterface
 {
     public function __construct(
         private string $relationId,

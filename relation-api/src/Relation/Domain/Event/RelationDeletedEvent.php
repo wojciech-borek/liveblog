@@ -2,7 +2,9 @@
 
 namespace App\Relation\Domain\Event;
 
-final class RelationDeletedEvent
+use App\Shared\Domain\Event\DomainEventInterface;
+
+final class RelationDeletedEvent implements DomainEventInterface
 {
     public function __construct(
         private string $id
