@@ -6,7 +6,6 @@ use App\Relation\Application\Query\Assembler\PostListDTOAssembler;
 use App\Relation\Application\Query\Assembler\RelationDetailDTOAssembler;
 use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Domain\Enum\RelationStatusEnum;
-use App\Relation\Domain\Model\Post;
 use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\ValueObject\Relation\RelationId;

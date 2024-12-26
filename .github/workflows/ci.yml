@@ -52,4 +52,4 @@ jobs:
         working-directory: relation-api
         env:
           DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
-        run: vendor/bin/phpunit --coverage-text
+        run: vendor/bin/phpunit

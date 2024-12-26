@@ -3,7 +3,6 @@
 namespace App\Relation\Application\Query\Assembler;
 
 use App\Relation\Application\Query\Dto\PostDTO;
-use App\Relation\Application\Query\Dto\RelationListDTO;
 use App\Relation\Domain\Model\Post;
 
 class PostListDTOAssembler
