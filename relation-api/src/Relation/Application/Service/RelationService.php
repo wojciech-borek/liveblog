@@ -7,7 +7,7 @@ use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 
-readonly class RelationService
+final class RelationService
 {
     public function __construct(
         private RelationRepositoryInterface $relationRepository,
