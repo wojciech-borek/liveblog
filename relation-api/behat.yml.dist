@@ -10,3 +10,4 @@ default:
             kernel:
                 class: App\Shared\Infrastructure\Kernel
                 environment: test
+            bootstrap: tests/bootstrap.php

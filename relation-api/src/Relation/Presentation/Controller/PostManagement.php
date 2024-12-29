@@ -18,12 +18,12 @@ class PostManagement extends AbstractController
     }
 
 
-    #[Route('/posts/{id}/create_post', name: 'post_create_post', methods: ['POST'])]
-    public function createPost(string $id, Request $request): JsonResponse {
+    #[Route('/posts', name: 'create_post', methods: ['POST'])]
+    public function createPost(Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         $this->messageBus->dispatch(new PostCreateCommand(
-            $id,
+            $data['relationId'],
             $data['content'],
             $data['isPublished']
         ));

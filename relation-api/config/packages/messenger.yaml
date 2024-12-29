@@ -12,6 +12,7 @@ framework:
 
     routing:
       App\Relation\Domain\Event\RelationDeletedEvent: async
+      App\Relation\Domain\Event\RelationRenumberedPostsEvent: async
 #      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
 #      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: async
 #      App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync

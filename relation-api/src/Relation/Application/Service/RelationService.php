@@ -7,7 +7,7 @@ use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
 
-class RelationService
+readonly class RelationService
 {
     public function __construct(
         private RelationRepositoryInterface $relationRepository,
@@ -21,9 +21,7 @@ class RelationService
             return null;
         }
         $posts = $this->postRepository->findByRelationId($relation->getId());
-        foreach ($posts->getList() as $post) {
-            $relation->addPost($post);
-        }
+        $relation->loadPosts($posts);
         return $relation;
     }
     public function getRelation(RelationId $relationId): ?Relation {

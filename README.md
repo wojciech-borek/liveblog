@@ -6,4 +6,4 @@ php bin/console messenger:consume async -vv
 php vendor/bin/phpstan analyse
 
 #behat
-php vendor/bin/behat
+APP_ENV=test vendor/bin/behat

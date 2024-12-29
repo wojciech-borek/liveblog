@@ -83,6 +83,13 @@ class Relation extends AggregateRoot
         $collection->add($post);
     }
 
+    public function loadPosts(PostCollection $postCollection): void {
+        foreach ($postCollection->getList() as $post) {
+            $this->selectCollection($post)->add($post);
+        }
+
+    }
+
     private function selectCollection(Post $post): PostCollection {
         return $post->getIsPublished()->equals(new IsPublished(true))
             ? $this->postsPublished

@@ -2,14 +2,12 @@ services:
   relation-api:
     container_name: relation-api
     build: relation-api/docker
-    env_file: relation-api/.env
     ports:
       - "8081:80"
     volumes:
       - ./relation-api:/var/www/html/relation-api:cached
     depends_on:
       - mongo
-
     environment:
       APP_NAME: relation-api
     networks:
