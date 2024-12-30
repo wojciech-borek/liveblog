@@ -28,7 +28,10 @@ class RelationManagement extends AbstractController
     public function index(Request $request): JsonResponse {
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
-        $data = $this->messengerQueryBus->handle(new GetRelationsQuery($page, $limit));
+        $filters = $request->query->all('filters');
+        $sortField = $request->query->get('sortField');
+        $sortDirection = $request->query->get('sortDirection');
+        $data = $this->messengerQueryBus->handle(new GetRelationsQuery($page, $limit, $filters, $sortField, $sortDirection));
 
         return $this->json($data);
     }
