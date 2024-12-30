@@ -14,5 +14,6 @@ interface CriteriaInterface
 
     public function getFilters(): ?array;
 
+    public function getSkip(): int;
 
 }
