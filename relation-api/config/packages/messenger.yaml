@@ -11,8 +11,16 @@ framework:
       async: '%env(MESSENGER_TRANSPORT_DSN)%'
 
     routing:
+      #Relation DomainEvent
       App\Relation\Domain\Event\RelationDeletedEvent: async
       App\Relation\Domain\Event\RelationRenumberedPostsEvent: async
+
+      #FirebaseAuth DomainEvent
+      App\FirebaseAuth\Domain\Event\UserRegisteredEvent: async
+
+      #FirebaseAuth
+      App\FirebaseAuth\Application\Command\RegisterUser\RegisterUserCommand: async
+
 #      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: sync
 #      App\Relation\Application\Command\RelationCreate\RelationCreateCommand: async
 #      App\Relation\Application\Command\RelationDelete\RelationDeleteCommand: sync

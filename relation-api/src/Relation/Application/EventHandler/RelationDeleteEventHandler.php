@@ -10,7 +10,7 @@ use App\Relation\Domain\ValueObject\Relation\RelationId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly class RelationDeleteEventHandler
+final readonly class RelationDeleteEventHandler
 {
     public function __construct(
         private PostRepositoryInterface $postRepository
