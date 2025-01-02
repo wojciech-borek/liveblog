@@ -51,7 +51,7 @@ class RelationManagement extends AbstractController
                 $data['title']
             ));
         } catch (InvalidRelationStatusException|InvalidRelationTitleException $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode());
         }
 
         return $this->json(null, Response::HTTP_CREATED);
@@ -63,7 +63,7 @@ class RelationManagement extends AbstractController
         try {
             $this->messageBus->dispatch(new RelationChangeStatusCommand($id, $data['status']));
         } catch (RelationNotFoundException|InvalidRelationStatusException $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode());
         }
         return $this->json(null, Response::HTTP_OK);
     }
@@ -73,7 +73,7 @@ class RelationManagement extends AbstractController
         try {
             $this->messageBus->dispatch(new RelationDeleteCommand($id));
         } catch (RelationNotFoundException $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode());
         }
         return $this->json(null, Response::HTTP_OK);
     }

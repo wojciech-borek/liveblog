@@ -27,3 +27,7 @@ services:
     App\Shared\Infrastructure\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    App\Shared\Infrastructure\Firebase\FirebaseAuth:
+      arguments:
+        $firebaseCredentials: '%env(resolve:FIREBASE_CREDENTIALS)%'

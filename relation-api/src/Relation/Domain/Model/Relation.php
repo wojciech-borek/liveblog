@@ -21,7 +21,7 @@ class Relation extends AggregateRoot
     private PostCollection $postsPublished;
     private PostCollection $postsUnpublished;
 
-    protected function __construct(
+    private function __construct(
         private readonly RelationId    $id,
         private readonly RelationTitle $title,
         private RelationStatus         $status,

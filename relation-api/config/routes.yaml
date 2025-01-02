@@ -1,5 +1,7 @@
-controllers:
-    resource:
-        path: ../src/Relation/Presentation/Controller/
-        namespace: App\Relation\Presentation\Controller
-    type: attribute
+relation:
+  resource: ../src/Relation/Presentation/Controller
+  type: attribute
+
+firebase:
+  resource: ../src/FirebaseAuth/Presentation/Controller
+  type: attribute
