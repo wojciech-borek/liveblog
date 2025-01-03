@@ -25,8 +25,8 @@ readonly class RelationChangeStatusHandler
         if (empty($relation)) {
             throw new RelationNotFoundException($id->getValue());
         }
-
-        $relation->changeStatus($command->getStatus());
+        $status = RelationStatusEnum::from($command->getStatus());
+        $relation->changeStatus($status);
         $this->relationRepository->save($relation);
     }
 }

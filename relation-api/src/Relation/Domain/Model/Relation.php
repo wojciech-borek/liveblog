@@ -68,8 +68,7 @@ class Relation extends AggregateRoot
         $this->raiseEvent(new RelationRenumberedPostsEvent($this->id->getValue(), $updatedPosts));
     }
 
-    public function changeStatus(string $status): void {
-        $status = RelationStatusEnum::tryFrom($status);
+    public function changeStatus(RelationStatusEnum $status): void {
         $newStatus = new RelationStatus($status->value);
         if ($this->status->equals($newStatus)) {
             throw new InvalidRelationStatusException('Relation has the same status');
