@@ -2,37 +2,25 @@
 
 namespace App\Shared\Application\Response;
 
-class Pagination implements PaginationInterface {
-    private int $totalCount;
-    private int $totalPages;
-    private int $currentPage;
-    private int $perPage;
+final readonly class Pagination implements PaginationInterface
+{
 
-    public function __construct(int $totalCount, int $totalPages, int $currentPage, int $perPage)
-    {
-        $this->totalCount = $totalCount;
-        $this->totalPages = $totalPages;
-        $this->currentPage = $currentPage;
-        $this->perPage = $perPage;
+    public function __construct(private int $totalCount, private int $currentPage, private int $perPage) {
     }
 
-    public function getTotalCount(): int
-    {
+    public function getTotalCount(): int {
         return $this->totalCount;
     }
 
-    public function getTotalPages(): int
-    {
-        return $this->totalPages;
+    public function getTotalPages(): int {
+        return (int)ceil($this->totalCount / $this->getPerPage());
     }
 
-    public function getCurrentPage(): int
-    {
+    public function getCurrentPage(): int {
         return $this->currentPage;
     }
 
-    public function getPerPage(): int
-    {
+    public function getPerPage(): int {
         return $this->perPage;
     }
 }

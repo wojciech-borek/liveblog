@@ -24,7 +24,7 @@ readonly class GetRelationsHandler
 
     /**
      * @param GetRelationsQuery $query
-     * @return array<RelationListDTO>
+     * @return ApiResponseInterface
      */
     public function __invoke(GetRelationsQuery $query): ApiResponseInterface {
         $criteria = new RelationCriteria(
@@ -38,7 +38,7 @@ readonly class GetRelationsHandler
         $items = $this->relationService->getRelations($criteria);
         $totalCount = $this->relationService->getTotalCount($criteria);
 
-        $pagination = new Pagination($totalCount, ceil($totalCount / $query->getLimit()), $query->getPage(), $query->getLimit());
+        $pagination = new Pagination($totalCount, $query->getPage(), $query->getLimit());
         return new ApiResponse(true, "", $this->relationDTOAssembler->toDTOCollection($items), $pagination);
 
 
