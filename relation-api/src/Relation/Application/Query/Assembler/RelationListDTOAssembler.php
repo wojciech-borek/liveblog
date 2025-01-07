@@ -5,7 +5,7 @@ namespace App\Relation\Application\Query\Assembler;
 use App\Relation\Application\Query\Dto\RelationListDTO;
 use App\Relation\Domain\Model\Relation;
 
-class RelationListDTOAssembler
+final class RelationListDTOAssembler
 {
     protected function toDTO(Relation $relation): RelationListDTO {
         return new RelationListDTO(

@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import {RouterView} from 'vue-router'
-import Navbar from './components/Navbar.vue'
-
-</script>
 <template>
   <v-app>
     <v-main>
@@ -13,3 +8,14 @@ import Navbar from './components/Navbar.vue'
     </v-main>
   </v-app>
 </template>
+
+<script lang="ts">
+
+import {RouterView} from 'vue-router'
+import Navbar from './components/Navbar.vue'
+import { defineComponent} from 'vue';
+
+export default defineComponent({
+  setup() {},
+});
+</script>

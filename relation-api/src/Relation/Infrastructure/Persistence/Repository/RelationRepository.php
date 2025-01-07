@@ -36,6 +36,14 @@ class RelationRepository extends DoctrineRepository implements RelationRepositor
         }
         return $relations;
     }
+    public function getTotalCount(CriteriaInterface $criteria): int {
+        $qb = $this->repository(RelationDocument::class)->createQueryBuilder();
+        $filters = $criteria->getFilters();
+        if (!empty($filters['status'])) {
+            $qb->field('status')->in((array)$filters['status']);
+        }
+        return $qb->count()->getQuery()->execute();
+    }
 
     public function findById(RelationId $id): ?Relation {
         $document = $this->documentManager()->find(RelationDocument::class, $id->getValue());

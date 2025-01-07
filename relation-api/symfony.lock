@@ -27,9 +27,6 @@
             "tests/Behat/DemoContext.php"
         ]
     },
-    "knplabs/knp-paginator-bundle": {
-        "version": "v6.6.1"
-    },
     "phpstan/phpstan": {
         "version": "2.0",
         "recipe": {

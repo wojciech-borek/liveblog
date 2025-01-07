@@ -36,5 +36,12 @@ class RelationService
         return $this->relationRepository->getRelations($criteria);
     }
 
+    /**
+     * @return int
+     */
+    public function getTotalCount(CriteriaInterface $criteria): int {
+        return $this->relationRepository->getTotalCount($criteria);
+    }
+
 
 }

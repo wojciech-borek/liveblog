@@ -7,6 +7,8 @@ use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Application\Service\RelationService;
 use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\Response\ApiResponse;
+use App\Shared\Application\Response\ApiResponseInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,12 +20,12 @@ readonly class GetOneRelationHandler
     ) {
     }
 
-    public function __invoke(GetOneRelationQuery $query): RelationDetailDTO {
+    public function __invoke(GetOneRelationQuery $query): ApiResponseInterface {
         $relationId = new RelationId($query->getId());
         $relation = $this->relationService->getRelationByIdWithPosts($relationId);
         if (null === $relation) {
             throw new RelationNotFoundException($relationId->getValue());
         }
-        return $this->relationDetailDTOAssembler->toDTO($relation);
+        return new ApiResponse(true, "", $this->relationDetailDTOAssembler->toDTO($relation));
     }
 }

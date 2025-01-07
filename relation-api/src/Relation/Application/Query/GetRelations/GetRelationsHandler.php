@@ -8,6 +8,9 @@ use App\Relation\Application\Query\Dto\RelationListDTO;
 use App\Relation\Application\Service\RelationService;
 use App\Relation\Domain\ValueObject\Relation\Criteria\RelationFilters;
 use App\Relation\Domain\ValueObject\Relation\Criteria\RelationSortField;
+use App\Shared\Application\Response\ApiResponse;
+use App\Shared\Application\Response\ApiResponseInterface;
+use App\Shared\Application\Response\Pagination;
 use App\Shared\Domain\ValueObject\Criteria\Limit;
 use App\Shared\Domain\ValueObject\Criteria\Page;
 use App\Shared\Domain\ValueObject\Criteria\SortDirection;
@@ -23,8 +26,7 @@ readonly class GetRelationsHandler
      * @param GetRelationsQuery $query
      * @return array<RelationListDTO>
      */
-    public function __invoke(GetRelationsQuery $query): array {
-
+    public function __invoke(GetRelationsQuery $query): ApiResponseInterface {
         $criteria = new RelationCriteria(
             new Page($query->getPage()),
             new Limit($query->getLimit()),
@@ -33,9 +35,12 @@ readonly class GetRelationsHandler
             $query->getFilters() !== null ? new RelationFilters($query->getFilters()) : []
         );
 
-        $items = $this->relationService->getRelations(
-            $criteria
-        );
-        return $this->relationDTOAssembler->toDTOCollection($items);
+        $items = $this->relationService->getRelations($criteria);
+        $totalCount = $this->relationService->getTotalCount($criteria);
+
+        $pagination = new Pagination($totalCount, ceil($totalCount / $query->getLimit()), $query->getPage(), $query->getLimit());
+        return new ApiResponse(true, "", $this->relationDTOAssembler->toDTOCollection($items), $pagination);
+
+
     }
 }

@@ -7,7 +7,7 @@ use App\Relation\Domain\Model\Post;
 
 class PostListDTOAssembler
 {
-    protected function toDTO(Post $post): PostDTO {
+    public function toDTO(Post $post): PostDTO {
         return new PostDTO(
             $post->getId(),
             $post->getContent(),

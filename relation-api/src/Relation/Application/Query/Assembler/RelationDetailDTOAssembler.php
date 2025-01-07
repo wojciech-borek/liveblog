@@ -5,7 +5,7 @@ namespace App\Relation\Application\Query\Assembler;
 use App\Relation\Application\Query\Dto\RelationDetailDTO;
 use App\Relation\Domain\Model\Relation;
 
-class RelationDetailDTOAssembler
+final readonly class RelationDetailDTOAssembler
 {
     public function __construct(private PostListDTOAssembler $postListDTOAssembler) {
     }

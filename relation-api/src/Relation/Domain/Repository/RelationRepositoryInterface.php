@@ -9,6 +9,7 @@ use App\Shared\Domain\Criteria\CriteriaInterface;
 interface RelationRepositoryInterface
 {
     public function getRelations(CriteriaInterface $criteria): array;
+    public function getTotalCount(CriteriaInterface $criteria): int;
     public function save(Relation $relation): void;
     public function delete(RelationId $id): void;
     public function findById(RelationId $id): ?Relation;
