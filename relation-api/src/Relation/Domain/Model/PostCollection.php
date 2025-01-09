@@ -45,6 +45,10 @@ class PostCollection
         throw new PostNotFoundException("Post with ID {$postId->getValue()} not found in  posts.");
     }
 
+    public function clear(): void {
+        $this->list = [];
+    }
+
     /**
      *
      * @return Post[]
@@ -57,8 +61,7 @@ class PostCollection
         return count($this->list);
     }
 
-    protected function getIdPositionMap(): array
-    {
+    protected function getIdPositionMap(): array {
         return array_map(fn($post) => [
             'id' => $post->getId(),
             'position' => $post->getPosition(),
