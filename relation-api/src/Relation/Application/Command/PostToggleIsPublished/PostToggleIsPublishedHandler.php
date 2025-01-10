@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Relation\Application\Command\PostToggleIsPublished;
 
@@ -14,8 +15,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class PostToggleIsPublishedHandler
 {
     public function __construct(
-        private PostRepositoryInterface $postRepository,
-        private RelationService         $relationService,
+        private PostRepositoryInterface    $postRepository,
+        private RelationService            $relationService,
         private MessageCommandBusInterface $messageBus
 
     ) {

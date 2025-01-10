@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\FirebaseAuth\Domain\Model;
 
 use App\FirebaseAuth\Domain\Event\UserRegisteredEvent;
