@@ -33,9 +33,7 @@ final readonly class PostToggleIsPublishedHandler
         }
         $relation->toggleIsPublishedPost($post);
         $this->postRepository->save($post);
-        foreach ($relation->getPostsPublished() as $post) {
 
-        }
         foreach ($relation->getDomainEvents() as $event) {
             $this->messageBus->dispatch($event);
         }
