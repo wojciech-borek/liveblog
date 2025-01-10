@@ -1,6 +1,6 @@
 <template>
   <v-form @submit.prevent="handleSubmit" v-model="isFormValid">
-    <v-card>
+    <v-card variant="flat">
       <v-card-title>
         Adding a new relation
       </v-card-title>
