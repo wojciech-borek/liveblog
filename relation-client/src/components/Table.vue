@@ -1,30 +1,61 @@
 <template>
-  <v-data-table
+  <v-data-table-server
+      v-model:items-per-page="pagination.perPage"
       :headers="columns"
       :items="items"
-      :server-items-length="pagination?.totalCount || 0"
+      :loading="isLoading"
+      :items-length="pagination.totalCount"
+      item-value="name"
       @update:options="fetchData"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Relacje</v-toolbar-title>
+        <v-toolbar-title :text="toolbarTitle"></v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
 
-<script setup lang="ts">
-import {defineProps, defineEmits, ref, watch} from 'vue';
-import {Relation} from '../models';
-import {Pagination} from '@/services/Pagination.ts';
+<script lang="ts">
+import {defineComponent} from 'vue';
+import type {Relation} from '@/models';
+import type {Pagination} from '@/services/Pagination';
 
-const props = defineProps<{
-  columns: { title: string; key: string }[];
-  items: Relation[];
-  pagination: Pagination | null;
-  fetchData: (options:{page: number, itemsPerPage: number, sortBy: string[], sortDesc: boolean[]}) => Promise<void>,
-}>();
+export default defineComponent({
+  name: 'RelationsTable',
+  props: {
+    toolbarTitle: {
+      type: String,
+      default: ''
+    },
+    columns: {
+      type: Array as () => { title: string; key: string }[],
+      required: true
+    },
+    items: {
+      type: Array as () => Relation[],
+      required: true
+    },
+    isLoading: {
+      type: Boolean,
+    },
+    pagination: {
+      type: Object as () => Pagination,
+      default: () => ({
+        totalCount: 0,
+        totalPages: 0,
+        currentPage: 1,
+        perPage: 10,
+      })
+    },
+    fetchData: {
+      type: Promise<void>,
+      required: true
+    },
+  },
 
-
+  setup() {
+  }
+});
 </script>
