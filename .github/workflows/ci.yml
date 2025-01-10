@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  liveblog-api-tests:
+  liveblog:
     runs-on: ubuntu-latest
     steps:
       - name: Set up PHP
