@@ -11,10 +11,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-class RelationDeleteHandler
+final readonly class RelationDeleteHandler
 {
     public function __construct(
         private RelationRepositoryInterface $relationRepository,
+        private PostRepositoryInterface     $postRepository,
         private RelationService             $relationService,
         private MessageBusInterface         $messageBus,
 
@@ -30,6 +31,12 @@ class RelationDeleteHandler
         }
         $relation->delete();
         $this->relationRepository->delete($relation->getId());
+
+        $posts = $this->postRepository->findByRelationId($id);
+
+        foreach ($posts->getList() as $post) {
+            $this->postRepository->delete($post->getId());
+        }
 
         foreach ($relation->getDomainEvents() as $event) {
             $this->messageBus->dispatch($event);

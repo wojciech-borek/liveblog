@@ -22,6 +22,14 @@ services:
             - '../src/Shared/Infrastructure/Kernel.php'
 #            - '../src/Tests/'
 
+    App\FirebaseAuth\Presentation\Action\:
+      resource: '../src/FirebaseAuth/Presentation/Action'
+      tags: [ 'controller.service_arguments' ]
+
+    App\Relation\Presentation\Action\:
+      resource: '../src/Relation/Presentation/Action'
+      tags: [ 'controller.service_arguments' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Shared\Infrastructure\EventListener\ExceptionListener:

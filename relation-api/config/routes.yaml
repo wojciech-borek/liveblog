@@ -1,7 +1,7 @@
 relation:
-  resource: ../src/Relation/Presentation/Controller
+  resource: ../src/Relation/Presentation/Action
   type: attribute
 
 firebase:
-  resource: ../src/FirebaseAuth/Presentation/Controller
+  resource: ../src/FirebaseAuth/Presentation/Action
   type: attribute
