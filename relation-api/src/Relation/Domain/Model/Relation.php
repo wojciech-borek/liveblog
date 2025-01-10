@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace App\Relation\Domain\Model;
 
-use App\Relation\Application\Command\PostToggleIsPublished\PostToggleIsPublishedCommand;
 use App\Relation\Domain\Enum\RelationStatusEnum;
-use App\Relation\Domain\Event\PostDeletedByRelationIdEvent;
 use App\Relation\Domain\Event\RelationDeletedEvent;
-use App\Relation\Domain\Event\RelationRenumberedPostsEvent;
 use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
@@ -62,16 +59,14 @@ class Relation extends AggregateRoot
         $currentCollection->removeFromListsById($post->getId());
         $currentCollection->toggleIsPublishedPost($post);
         $this->addPost($post);
-
+        $this->renumberPosts();
         $this->raiseEvent(new ToggledIsPublishedPostEvent($post->getId()->getValue(), $post->getIsPublished()->getValue()));
 
     }
 
-    public function renumberPosts(): void {
-
+    private function renumberPosts(): void {
         $this->postsPublished->renumber();
         $this->postsUnpublished->renumber();
-        $this->raiseEvent(new RelationRenumberedPostsEvent($this->id->getValue()));
     }
 
     public function changeStatus(RelationStatusEnum $status): void {

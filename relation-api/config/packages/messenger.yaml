@@ -14,7 +14,6 @@ framework:
       #Relation DomainEvent
       App\Relation\Domain\Event\RelationDeletedEvent: async
       App\Relation\Domain\Event\ToggledIsPublishedPostEvent: async
-      App\Relation\Domain\Event\RelationRenumberedPostsEvent: async
 
       #FirebaseAuth DomainEvent
       App\FirebaseAuth\Domain\Event\UserRegisteredEvent: async

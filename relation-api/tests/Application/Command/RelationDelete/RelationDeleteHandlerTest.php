@@ -56,21 +56,11 @@ class RelationDeleteHandlerTest extends TestCase
 
         $this->relationService->expects($this->once())->method('getRelation')->willReturn($relationMock);
         $relationMock->expects($this->once())->method('delete');
+
+        $this->postRepository->expects($this->once())
+            ->method('deleteByRelationId')->with($relationMock->getId());
+
         $this->relationRepository->expects($this->once())->method('delete')->with($relationMock->getId());
-
-        $postCollectionMock = $this->createMock(PostCollection::class);
-        $postMock = $this->createMock(Post::class);
-        $postMock->method('getId')->willReturn(new PostId('507f1f77bcf86cd799439012'));
-        $posts = [$postMock, $postMock];
-        $postCollectionMock->method('getList')->willReturn($posts);
-
-        $this->postRepository
-            ->expects($this->once())
-            ->method('findByRelationId')->with($relationMock->getId())
-            ->willReturn($postCollectionMock);
-
-        $this->postRepository->expects($this->exactly(count($posts)))
-            ->method('delete');
 
         $this->handler->__invoke($command);
     }

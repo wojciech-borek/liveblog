@@ -21,6 +21,27 @@ class PostRepository extends DoctrineRepository implements PostRepositoryInterfa
         $this->persist($postDocument);
     }
 
+    public function deleteByRelationId(RelationId $relationId): void {
+        $this->documentManager()->getDocumentCollection(PostDocument::class)->deleteMany(['relationId' => $relationId->getValue()]);
+
+    }
+
+    public function updatePositions(PostCollection $postCollection): void {
+        $postDocumentCollection = $this->documentManager()->getDocumentCollection(PostDocument::class);
+
+        foreach ($postCollection->getList() as $post) {
+            $postDocumentCollection->updateOne(
+                ['_id' => $post->getId()],
+                [
+                    '$set' => [
+                        'position' => $post->getPosition()->getValue()
+                    ]
+                ],
+            );
+        }
+    }
+
+
     public function delete(PostId $id): void {
         $document = $this->documentManager()->find(PostDocument::class, $id->getValue());
         $this->remove($document);

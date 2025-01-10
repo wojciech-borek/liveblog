@@ -31,13 +31,10 @@ final readonly class RelationDeleteHandler
             throw new RelationNotFoundException($id->getValue());
         }
         $relation->delete();
+
+        $this->postRepository->deleteByRelationId($relation->getId());
+
         $this->relationRepository->delete($relation->getId());
-
-        $posts = $this->postRepository->findByRelationId($id);
-
-        foreach ($posts->getList() as $post) {
-            $this->postRepository->delete($post->getId());
-        }
 
         foreach ($relation->getDomainEvents() as $event) {
             $this->messageBus->dispatch($event);

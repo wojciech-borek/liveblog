@@ -6,6 +6,7 @@ namespace App\Relation\Application\Command\PostToggleIsPublished;
 use App\Relation\Application\Service\RelationService;
 use App\Relation\Domain\Exception\PostNotFoundException;
 use App\Relation\Domain\Exception\RelationNotFoundException;
+use App\Relation\Domain\Model\PostCollection;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\ValueObject\Post\PostId;
 use App\Shared\Application\MessageCommandBusInterface;
@@ -33,6 +34,10 @@ final readonly class PostToggleIsPublishedHandler
             throw new RelationNotFoundException($post->getRelationId()->getValue());
         }
         $relation->toggleIsPublishedPost($post);
+
+        $this->postRepository->updatePositions($relation->getPostsPublished());
+        $this->postRepository->updatePositions($relation->getPostsUnpublished());
+
         $this->postRepository->save($post);
 
         foreach ($relation->getDomainEvents() as $event) {

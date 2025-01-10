@@ -18,5 +18,8 @@ interface PostRepositoryInterface
 
     public function findByRelationId(RelationId $relationId): PostCollection;
 
+    public function updatePositions(PostCollection $postCollection): void;
+
+    public function deleteByRelationId(RelationId $relationId): void;
 
 }
