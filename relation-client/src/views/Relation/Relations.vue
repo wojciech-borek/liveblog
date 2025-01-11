@@ -16,6 +16,9 @@
           :isLoading="isLoading"
           :fetchData="fetchData"
           :toolbarTitle="'Relations'"
+          :actions="{ edit: true, delete: true }"
+          @handleEdit="editItem"
+          @handleDelete="deleteItem"
       />
     </v-col>
   </v-row>
@@ -33,6 +36,7 @@ import router from "@/router/index.ts";
 const columns = ref<{ title: string, key: string, sortable: boolean, value?: (item: any) => string }[]>([
   {title: 'Title', key: 'title', sortable: true,},
   {title: 'Status', key: 'status', sortable: false, value: item => getStatusTranslation(item.status)},
+  {title: 'Actions', key: 'actions', sortable: false,},
 ]);
 
 const isLoading = ref<Boolean>(false);
@@ -44,6 +48,25 @@ const pagination = ref<Pagination>({
   perPage: 10,
 });
 
+const editItem = async (id: string) => {
+  console.log('editItem ' + id);
+}
+const deleteItem = async (id: string) => {
+  try {
+    isLoading.value = true;
+    await RelationService.delete(id);
+    await fetchData({
+      page: pagination.value.currentPage,
+      itemsPerPage: pagination.value.perPage,
+      sortBy: [],
+    });
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    isLoading.value = false;
+  }
+
+}
 const fetchData = async (options: {
   page: number;
   itemsPerPage: number;

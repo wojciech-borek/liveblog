@@ -1,4 +1,6 @@
 # liveblog
+
+# liveblog-api
 #messanger-consume
 php bin/console messenger:consume async -vv
 
@@ -7,3 +9,5 @@ php vendor/bin/phpstan analyse
 
 #behat
 APP_ENV=test vendor/bin/behat
+
+

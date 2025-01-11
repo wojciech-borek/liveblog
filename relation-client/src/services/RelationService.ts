@@ -24,6 +24,11 @@ export const RelationService = {
     async create(params: { title: string }): Promise<{ data: null; pagination: null }> {
         const response = await ApiClient.post('/relations', {title: params.title})
         return response.data
+    },
+
+    async delete(id: string): Promise<{ data: null; pagination: null }> {
+        const response = await ApiClient.delete('/relations/' + id)
+        return response.data
     }
 
 
