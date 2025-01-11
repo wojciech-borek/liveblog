@@ -44,8 +44,8 @@
   </v-form>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref, reactive} from 'vue';
+<script setup lang="ts">
+import {reactive, ref} from 'vue';
 
 interface FormData {
   title: string;
@@ -55,61 +55,50 @@ interface FormErrors {
   title: string[];
 }
 
-export default defineComponent({
-  name: 'AddRelationForm',
-  emits: ['submit', 'cancel'],
+const emit = defineEmits<{
+  (e: 'submit', data: FormData): void;
+  (e: 'cancel'): void;
+}>();
 
-  setup(_, {emit}) {
-    const isFormValid = ref(false);
+const isFormValid = ref(false);
 
-    const formData = reactive<FormData>({
-      title: '',
-    });
-
-    const errors = reactive<FormErrors>({
-      title: [],
-    });
-
-    const titleRules = [
-      (v: string) => !!v || 'Relation title cannot be empty.',
-      (v: string) => (v && v.length <= 255) || 'Relation title cannot exceed 255 characters.',
-    ];
-    const clearError = (field: keyof FormErrors) => {
-      errors[field] = [];
-    };
-
-    const resetForm = () => {
-      formData.title = '';
-      Object.keys(errors).forEach((key) => {
-        errors[key as keyof FormErrors] = [];
-      });
-    };
-
-    const handleSubmit = async () => {
-      try {
-        emit('submit', {...formData});
-        resetForm();
-      } catch (error) {
-        if (error instanceof Error) {
-          errors.title = [error.message];
-        }
-      }
-    };
-
-    const handleCancel = () => {
-      resetForm();
-      emit('cancel');
-    };
-
-    return {
-      formData,
-      errors,
-      isFormValid,
-      titleRules,
-      handleSubmit,
-      handleCancel,
-      clearError,
-    };
-  },
+const formData = reactive<FormData>({
+  title: '',
 });
+
+const errors = reactive<FormErrors>({
+  title: [],
+});
+
+const titleRules = [
+  (v: string) => !!v || 'Relation title cannot be empty.',
+  (v: string) => (v && v.length <= 255) || 'Relation title cannot exceed 255 characters.',
+];
+const clearError = (field: keyof FormErrors) => {
+  errors[field] = [];
+};
+
+const resetForm = () => {
+  formData.title = '';
+  Object.keys(errors).forEach((key) => {
+    errors[key as keyof FormErrors] = [];
+  });
+};
+
+const handleSubmit = async () => {
+  try {
+    emit('submit', {...formData});
+    resetForm();
+  } catch (error) {
+    if (error instanceof Error) {
+      errors.title = [error.message];
+    }
+  }
+};
+
+const handleCancel = () => {
+  resetForm();
+  emit('cancel');
+};
+
 </script>

@@ -17,45 +17,16 @@
   </v-data-table-server>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script setup lang="ts">
 import type {Relation} from '@/models';
 import type {Pagination} from '@/services/Pagination';
 
-export default defineComponent({
-  name: 'RelationsTable',
-  props: {
-    toolbarTitle: {
-      type: String,
-      default: ''
-    },
-    columns: {
-      type: Array as () => { title: string; key: string }[],
-      required: true
-    },
-    items: {
-      type: Array as () => Relation[],
-      required: true
-    },
-    isLoading: {
-      type: Boolean,
-    },
-    pagination: {
-      type: Object as () => Pagination,
-      default: () => ({
-        totalCount: 0,
-        totalPages: 0,
-        currentPage: 1,
-        perPage: 10,
-      })
-    },
-    fetchData: {
-      type: Promise<void>,
-      required: true
-    },
-  },
-
-  setup() {
-  }
-});
+const props = defineProps<{
+  toolbarTitle?: string;
+  columns: { title: string; key: string }[];
+  items: Relation[];
+  isLoading?: boolean;
+  pagination?: Pagination;
+  fetchData: (options: { page: number; itemsPerPage: number; sortBy: string[] }) => Promise<void>;
+}>();
 </script>
