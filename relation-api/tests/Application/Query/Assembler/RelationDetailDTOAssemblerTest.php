@@ -26,13 +26,13 @@ class RelationDetailDTOAssemblerTest extends TestCase
         $relationCreatedAt = new CreatedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
         $relationModifiedAt = new ModifiedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
 
-
-        $relation = $this->createMock(Relation::class);
-        $relation->method('getId')->willReturn($relationId);
-        $relation->method('getTitle')->willReturn($relationTitle);
-        $relation->method('getStatus')->willReturn($relationStatus);
-        $relation->method('getCreatedAt')->willReturn($relationCreatedAt);
-        $relation->method('getModifiedAt')->willReturn($relationModifiedAt);
+        $relation = $this->createConfiguredMock(Relation::class, [
+            'getId'=> $relationId,
+            'getTitle'=> $relationTitle,
+            'getStatus'=> $relationStatus,
+            'getCreatedAt'=> $relationCreatedAt,
+            'getModifiedAt'=> $relationModifiedAt
+        ]);
 
         $postListMock = $this->createMock(PostCollection::class);
         $postListMock->method('getList')->willReturn([]);

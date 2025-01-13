@@ -24,12 +24,14 @@ class RelationListDTOAssemblerTest extends TestCase
         $relation1CreatedAt = new CreatedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
         $relation1ModifiedAt = new ModifiedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
 
-        $relation1 = $this->createMock(Relation::class);
-        $relation1->method('getId')->willReturn($relation1Id);
-        $relation1->method('getTitle')->willReturn($relation1Title);
-        $relation1->method('getStatus')->willReturn($relation1Status);
-        $relation1->method('getCreatedAt')->willReturn($relation1CreatedAt);
-        $relation1->method('getModifiedAt')->willReturn($relation1ModifiedAt);
+        $relation1 = $this->createConfiguredMock(Relation::class, [
+            'getId'=> $relation1Id,
+            'getTitle'=> $relation1Title,
+            'getStatus'=> $relation1Status,
+            'getCreatedAt'=> $relation1CreatedAt,
+            'getModifiedAt'=> $relation1ModifiedAt
+        ]);
+
 
         $relation2Id = new RelationId('507f1f77bcf86cd799439012');
         $relation2Title = new RelationTitle('Title 2');
@@ -37,14 +39,13 @@ class RelationListDTOAssemblerTest extends TestCase
         $relation2CreatedAt = new CreatedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
         $relation2ModifiedAt = new ModifiedAt(new \DateTimeImmutable('2023-01-01 10:00:00'));
 
-
-        $relation2 = $this->createMock(Relation::class);
-        $relation2->method('getId')->willReturn($relation2Id);
-        $relation2->method('getTitle')->willReturn($relation2Title);
-        $relation2->method('getStatus')->willReturn($relation2Status);
-        $relation2->method('getCreatedAt')->willReturn($relation2CreatedAt);
-        $relation2->method('getModifiedAt')->willReturn($relation2ModifiedAt);
-
+        $relation2 = $this->createConfiguredMock(Relation::class, [
+            'getId'=> $relation2Id,
+            'getTitle'=> $relation2Title,
+            'getStatus'=> $relation2Status,
+            'getCreatedAt'=> $relation2CreatedAt,
+            'getModifiedAt'=> $relation2ModifiedAt
+        ]);
 
         $assembler = new RelationListDTOAssembler();
 

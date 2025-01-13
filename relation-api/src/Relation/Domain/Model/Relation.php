@@ -22,11 +22,11 @@ class Relation extends AggregateRoot
     private PostCollection $postsUnpublished;
 
     private function __construct(
-        private readonly RelationId    $id,
-        private readonly RelationTitle $title,
-        private RelationStatus         $status,
-        private readonly CreatedAt     $createdAt,
-        private readonly ModifiedAt    $modifiedAt
+        private readonly RelationId $id,
+        private RelationTitle       $title,
+        private RelationStatus      $status,
+        private readonly CreatedAt  $createdAt,
+        private ModifiedAt          $modifiedAt
     ) {
         $this->postsPublished = new PostCollection();
         $this->postsUnpublished = new PostCollection();
@@ -69,12 +69,22 @@ class Relation extends AggregateRoot
         $this->postsUnpublished->renumber();
     }
 
+    private function updateModifiedAt(): void {
+        $this->modifiedAt = new ModifiedAt(new \DateTimeImmutable());
+    }
+
     public function changeStatus(RelationStatusEnum $status): void {
         $newStatus = new RelationStatus($status->value);
         if ($this->status->equals($newStatus)) {
             throw new InvalidRelationStatusException('Relation has the same status');
         }
         $this->status = $newStatus;
+        $this->updateModifiedAt();
+    }
+
+    public function changeTitle(RelationTitle $title): void {
+        $this->title = $title;
+        $this->updateModifiedAt();
     }
 
     public function addPost(Post $post): void {
@@ -87,7 +97,6 @@ class Relation extends AggregateRoot
         foreach ($postCollection->getList() as $post) {
             $this->selectCollection($post)->add($post);
         }
-
     }
 
     private function selectCollection(Post $post): PostCollection {
@@ -96,7 +105,6 @@ class Relation extends AggregateRoot
             : $this->postsUnpublished;
 
     }
-
 
     public function getId(): RelationId {
         return $this->id;
