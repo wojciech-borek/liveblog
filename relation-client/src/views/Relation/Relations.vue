@@ -49,8 +49,9 @@ const pagination = ref<Pagination>({
 });
 
 const editItem = async (id: string) => {
-  console.log('editItem ' + id);
+  router.push({name: 'relation-edit', params: {id: id}});
 }
+
 const deleteItem = async (id: string) => {
   try {
     isLoading.value = true;

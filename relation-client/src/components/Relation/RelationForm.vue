@@ -2,7 +2,8 @@
   <v-form @submit.prevent="handleSubmit" v-model="isFormValid">
     <v-card variant="flat">
       <v-card-title>
-        Adding a new relation
+        <span v-if="isEdit">Edit Relation</span>
+        <span v-else>Create Relation</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -45,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue';
+import {reactive, ref, watch} from 'vue';
 
 interface FormData {
   title: string;
@@ -55,6 +56,11 @@ interface FormErrors {
   title: string[];
 }
 
+const props = defineProps<{
+  isEdit: boolean,
+  initialData?: { title: string }
+}>();
+
 const emit = defineEmits<{
   (e: 'submit', data: FormData): void;
   (e: 'cancel'): void;
@@ -62,13 +68,23 @@ const emit = defineEmits<{
 
 const isFormValid = ref(false);
 
-const formData = reactive<FormData>({
-  title: '',
+const formData = ref<{ title: string }>({
+  title: props.initialData?.title || ''
 });
 
 const errors = reactive<FormErrors>({
   title: [],
 });
+
+watch(
+  () => props.initialData,
+  (newValue) => {
+    if (newValue) {
+      formData.value.title = newValue.title;
+    }
+  },
+  { immediate: true }
+);
 
 const titleRules = [
   (v: string) => !!v || 'Relation title cannot be empty.',
@@ -79,7 +95,7 @@ const clearError = (field: keyof FormErrors) => {
 };
 
 const resetForm = () => {
-  formData.title = '';
+  formData.value.title = '';
   Object.keys(errors).forEach((key) => {
     errors[key as keyof FormErrors] = [];
   });
@@ -87,7 +103,7 @@ const resetForm = () => {
 
 const handleSubmit = async () => {
   try {
-    emit('submit', {...formData});
+    emit('submit', {...formData.value});
     resetForm();
   } catch (error) {
     if (error instanceof Error) {

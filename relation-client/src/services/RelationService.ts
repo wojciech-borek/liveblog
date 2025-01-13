@@ -21,8 +21,21 @@ export const RelationService = {
         return response.data
     },
 
+    async getRelation(id: string): Promise<{
+        data: Relation[];
+        pagination: Pagination
+    }> {
+        const response = await ApiClient.get<ApiResponse<Relation>>("/relations/"+id);
+        return response.data
+    },
+
     async create(params: { title: string }): Promise<{ data: null; pagination: null }> {
         const response = await ApiClient.post('/relations', {title: params.title})
+        return response.data
+    },
+
+    async update(id:string, params: { title: string }): Promise<{ data: null; pagination: null }> {
+        const response = await ApiClient.put('/relations/'+id, {title: params.title})
         return response.data
     },
 
