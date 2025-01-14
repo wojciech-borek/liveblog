@@ -16,8 +16,9 @@
           :isLoading="isLoading"
           :fetchData="fetchData"
           :toolbarTitle="'Relations'"
-          :actions="{ edit: true, delete: true }"
+          :actions="{ view:true,edit: true, delete: true }"
           @handleEdit="editItem"
+          @handleView="viewItem"
           @handleDelete="deleteItem"
       />
     </v-col>
@@ -50,6 +51,10 @@ const pagination = ref<Pagination>({
 
 const editItem = async (id: string) => {
   router.push({name: 'relation-edit', params: {id: id}});
+}
+
+const viewItem = async (id: string) => {
+  router.push({name: 'relation-view', params: {id: id}});
 }
 
 const deleteItem = async (id: string) => {

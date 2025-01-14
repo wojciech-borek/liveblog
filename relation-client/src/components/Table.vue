@@ -10,6 +10,15 @@
   >
     <template v-slot:item.actions="{ item }">
       <v-icon
+          v-if="actions.view"
+          size="small"
+          class="me-2"
+          @click="handleView(item.id)"
+          color="primary"
+      >
+        mdi-eye
+      </v-icon>
+      <v-icon
           v-if="actions.edit"
           size="small"
           class="me-2"
@@ -50,14 +59,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Relation } from '@/models';
-import type { Pagination } from '@/services/Pagination';
+import {ref} from 'vue';
+import type {Relation} from '@/models';
+import type {Pagination} from '@/services/Pagination';
 
 const props = defineProps<{
   toolbarTitle?: string;
   columns: { title: string; key: string }[];
-  actions: { edit: boolean; delete: boolean };
+  actions: { edit: boolean; delete: boolean, view: boolean };
   items: Relation[];
   isLoading?: boolean;
   pagination?: Pagination;
@@ -66,6 +75,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'handleEdit', id: string): void;
+  (e: 'handleView', id: string): void;
   (e: 'handleDelete', id: string): void;
 }>();
 
@@ -86,5 +96,9 @@ const handleDeleteConfirmed = () => {
 
 const handleEdit = async (id: string) => {
   emit('handleEdit', id);
+};
+
+const handleView = async (id: string) => {
+  emit('handleView', id);
 };
 </script>
