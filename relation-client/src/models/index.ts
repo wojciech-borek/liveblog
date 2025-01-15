@@ -1,9 +1,10 @@
 export interface Post {
+    id: string;
     content: string,
 }
 
 export interface Relation {
-    id: number;
+    id: string;
     title: string;
     status: string;
     postsPublished: Post[]
