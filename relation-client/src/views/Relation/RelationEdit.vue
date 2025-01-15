@@ -25,7 +25,7 @@ interface RelationFormData {
 const relationId = router.currentRoute.value.params.id;
 
 const route = useRoute();
-const relationData = route.params.relationData;
+const relationData = route.meta.relationData;
 
 const handleSubmit = async (data: RelationFormData) => {
   try {
