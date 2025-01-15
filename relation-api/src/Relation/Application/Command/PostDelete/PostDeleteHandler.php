@@ -29,6 +29,10 @@ readonly class PostDeleteHandler
         if (empty($relation)) {
             throw new RelationNotFoundException($post->getRelationId()->getValue());
         }
+        $relation->removePost($post);
+        $this->postRepository->updatePositions($relation->getPostsPublished());
+        $this->postRepository->updatePositions($relation->getPostsUnpublished());
+        $this->postRepository->save($post);
         $this->postRepository->delete($post->getId());
     }
 }

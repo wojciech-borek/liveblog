@@ -54,6 +54,13 @@ class Relation extends AggregateRoot
         $this->postsUnpublished->clear();
     }
 
+    public function removePost(Post $post): void {
+        $currentCollection = $this->selectCollection($post);
+        $currentCollection->removeFromListsById($post->getId());
+        $this->renumberPosts();
+    }
+
+
     public function toggleIsPublishedPost(Post $post): void {
         $currentCollection = $this->selectCollection($post);
         $currentCollection->removeFromListsById($post->getId());
