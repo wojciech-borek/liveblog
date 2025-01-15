@@ -8,6 +8,7 @@ use App\Relation\Application\Command\PostToggleIsPublished\PostToggleIsPublished
 use App\Shared\Application\MessageCommandBusInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[OA\Tag(
@@ -54,6 +55,6 @@ final readonly class ToggleIsPublishedPostAction
     #[Route('/api/posts/{id}/toggle_is_published_post', name: 'toggle_is_published_post', methods: ['POST'])]
     public function __invoke(string $id, Request $request): JsonResponse {
         $this->messageBus->dispatch(new PostToggleIsPublishedCommand($id));
-        return new JsonResponse();
+        return new JsonResponse(null, Response::HTTP_OK);
     }
 }
