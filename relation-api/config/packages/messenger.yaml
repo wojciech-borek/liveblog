@@ -13,6 +13,7 @@ framework:
     routing:
       #Relation DomainEvent
       App\Relation\Domain\Event\RelationDeletedEvent: async
+      App\Relation\Domain\Event\PostDeletedEvent: async
       App\Relation\Domain\Event\ToggledIsPublishedPostEvent: async
 
       #FirebaseAuth DomainEvent

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Event\PostDeletedEvent;
 use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
@@ -53,6 +54,15 @@ class Relation extends AggregateRoot
         $this->postsPublished->clear();
         $this->postsUnpublished->clear();
     }
+
+    public function removePost(Post $post): void {
+        $currentCollection = $this->selectCollection($post);
+        $currentCollection->removeFromListsById($post->getId());
+        $this->renumberPosts();
+        $this->raiseEvent(new PostDeletedEvent($post->getId()->getValue()));
+        $this->updateModifiedAt();
+    }
+
 
     public function toggleIsPublishedPost(Post $post): void {
         $currentCollection = $this->selectCollection($post);
