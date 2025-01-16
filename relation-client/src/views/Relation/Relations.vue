@@ -26,37 +26,45 @@
 import {onMounted, ref} from 'vue';
 import router from '@/router';
 import Table from '@/components/Table.vue';
-import { useRelationStore } from '@/store/useRelationStore';
-import { DataTableOptions } from '@/services/DataTableOptions';
+import {useRelationStore} from '@/store/useRelationStore';
+import {DataTableOptions} from '@/services/DataTableOptions';
 import {storeToRefs} from "pinia";
 
 const relationStore = useRelationStore();
-const { relations, pagination, isLoading } = storeToRefs(relationStore);
+const {relations, pagination, isLoading} = storeToRefs(relationStore);
 
 const columns = ref([
-  { title: 'Title', key: 'title', sortable: true },
-  { title: 'Status', key: 'status', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false },
+  {title: 'Title', key: 'title', sortable: true},
+  {title: 'Status', key: 'status', sortable: false},
+  {title: 'Actions', key: 'actions', sortable: false},
 ]);
 
 const editItem = (id: string) => {
-  router.push({ name: 'relation-edit', params: { id } });
+  router.push({name: 'relation-edit', params: {id}});
 };
 
 const viewItem = (id: string) => {
-  router.push({ name: 'relation-view', params: { id } });
+  router.push({name: 'relation-view', params: {id}});
 };
 
 const deleteItem = async (id: string) => {
-  await relationStore.deleteRelation(id);
-  await fetchData(pagination.value);
+  try {
+    await relationStore.deleteRelation(id);
+    await fetchData(pagination.value);
+  } catch (error) {
+    console.error('Failed to delete relation:', error);
+  }
 };
 
 const fetchData = async (options: DataTableOptions) => {
-  await relationStore.fetchRelations(options);
+  try {
+    await relationStore.fetchRelations(options);
+  } catch (error) {
+    console.error('Failed to fetch relations:', error);
+  }
 };
 
 const navigateToCreate = () => {
-  router.push({ name: 'relation-create' });
+  router.push({name: 'relation-create'});
 };
 </script>

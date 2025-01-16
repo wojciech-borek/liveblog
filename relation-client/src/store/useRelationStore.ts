@@ -4,6 +4,7 @@ import {Pagination} from "../services/Pagination";
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {DataTableOptions} from "../services/DataTableOptions";
+
 export const useRelationStore = defineStore('relationStore', () => {
     const relations = ref<Relation[]>([]);
     const pagination = ref<Pagination>({
@@ -18,15 +19,13 @@ export const useRelationStore = defineStore('relationStore', () => {
         isLoading.value = true;
         error.value = null;
 
-        const sortField = options.sortBy?.[0] || '';
-        const sortDirection = options.sortDesc?.[0] ? 'desc' : 'asc';
+        const sort = options.sortBy?.[0] || {};
 
         try {
             const response = await RelationService.getRelations(
                 options.page,
                 options.itemsPerPage,
-                sortField,
-                sortDirection
+                sort,
             );
 
             relations.value = response.data;
@@ -46,7 +45,10 @@ export const useRelationStore = defineStore('relationStore', () => {
         isLoading.value = true;
         try {
             await RelationService.delete(id);
-            relations.value = relations.value.filter(relation => relation.id !== id);
+            const response = await RelationService.delete(id);
+            if (response.data === null) {
+                relations.value = relations.value.filter(relation => relation.id !== id);
+            }
         } catch (err) {
             console.error('Error:', error);
             error.value = 'Failed to delete relation';

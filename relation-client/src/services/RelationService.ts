@@ -4,14 +4,15 @@ import {Pagination} from "./Pagination";
 
 export const RelationService = {
 
-    async getRelations(page: number, limit: number, sortField: string, sortDirection: string): Promise<{
+    async getRelations(page: number, limit: number, sort: any): Promise<{
         data: Relation[];
         pagination: Pagination
     }> {
         const params = {page, limit}
-        if (sortField.length) {
+
+        if (sort) {
             Object.assign(params, {
-                sortField: sortField, sortDirection
+                sortField: sort.key, sortDirection: sort.order
             });
         }
 
