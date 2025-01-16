@@ -4,14 +4,14 @@ import {Pagination} from "./Pagination";
 
 export const RelationService = {
 
-    async getRelations(page: number, limit: number, sortBy: string[]): Promise<{
+    async getRelations(page: number, limit: number, sortField: string, sortDirection: string): Promise<{
         data: Relation[];
         pagination: Pagination
     }> {
         const params = {page, limit}
-        if (sortBy.length) {
+        if (sortField.length) {
             Object.assign(params, {
-                sortField: sortBy[0].key, sortDirection: sortBy[0].order
+                sortField: sortField, sortDirection
             });
         }
 
@@ -21,11 +21,12 @@ export const RelationService = {
         return response.data
     },
 
+
     async getRelation(id: string): Promise<{
         data: Relation[];
         pagination: Pagination
     }> {
-        const response = await ApiClient.get<ApiResponse<Relation>>("/relations/"+id);
+        const response = await ApiClient.get<ApiResponse<Relation>>("/relations/" + id);
         return response.data
     },
 
@@ -34,8 +35,8 @@ export const RelationService = {
         return response.data
     },
 
-    async update(id:string, params: { title: string }): Promise<{ data: null; pagination: null }> {
-        const response = await ApiClient.put('/relations/'+id, {title: params.title})
+    async update(id: string, params: { title: string }): Promise<{ data: null; pagination: null }> {
+        const response = await ApiClient.put('/relations/' + id, {title: params.title})
         return response.data
     },
 
