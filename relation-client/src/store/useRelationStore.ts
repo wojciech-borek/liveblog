@@ -44,13 +44,12 @@ export const useRelationStore = defineStore('relationStore', () => {
     const deleteRelation = async (id: string) => {
         isLoading.value = true;
         try {
-            await RelationService.delete(id);
             const response = await RelationService.delete(id);
             if (response.data === null) {
                 relations.value = relations.value.filter(relation => relation.id !== id);
             }
         } catch (err) {
-            console.error('Error:', error);
+            console.error('Error:', err);
             error.value = 'Failed to delete relation';
         } finally {
             isLoading.value = false;
