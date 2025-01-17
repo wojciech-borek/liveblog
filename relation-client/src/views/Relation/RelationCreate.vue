@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import RelationForm from "@/components/Relation/RelationForm.vue";
 import router from "@/router/index.ts";
+import {ref} from 'vue';
 import {RelationService} from "@/services/RelationService.ts";
 
 interface RelationFormData {

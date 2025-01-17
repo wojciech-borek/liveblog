@@ -3,9 +3,10 @@
     <v-list>
       <v-card
           v-for="(post, index) in items"
-          :key="index"
+          :key="post.position"
           class="mx-auto my-3"
           :variant="'outlined'"
+          :disabled="post.status==='in_sync'"
       >
         <v-card-text class="text-h5 py-2">
           {{ post.content }}
