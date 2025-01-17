@@ -5,6 +5,7 @@ namespace App\Notification\Application\EventHandler;
 
 use App\Relation\Domain\Event\PostDeletedEvent;
 use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -15,6 +16,13 @@ final readonly class PostDeletedEventHandler
     }
 
     public function __invoke(PostDeletedEvent $event): void {
-        $this->logger->info(sprintf('Post %s was deleted', $event->getId()));
+
+        $update = new Update(
+            '/relation/' . $event->getRelationId(),
+            json_encode([
+                'postId' => $event->getId(),
+            ])
+        );
+        $this->hub->publish($update);
     }
 }
