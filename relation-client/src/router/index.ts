@@ -21,31 +21,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/relation-edit/:id',
         name: 'relation-edit',
         component: RelationEdit,
-        beforeEnter: async (to, from, next) => {
-            try {
-                const relation = await RelationService.getRelation(to.params.id as string);
-                to.meta.relationData = relation.data as Relation;
-                next();
-            } catch (error) {
-                console.error('Error fetching relation:', error);
-                next({name: 'relations'});
-            }
-        },
     },
     {
         path: '/relation-view/:id',
         name: 'relation-view',
         component: RelationView,
-        beforeEnter: async (to, from, next) => {
-            try {
-                const relation = await RelationService.getRelation(to.params.id as string);
-                to.meta.relationData = relation.data as Relation;
-                next();
-            } catch (error) {
-                console.error('Error fetching relation:', error);
-                next({name: 'relations'});
-            }
-        },
     }
 ]
 const router = createRouter({

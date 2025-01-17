@@ -3,7 +3,8 @@
     <v-col cols="12">
       <RelationForm
           :isEdit=true
-          :initialData="relationData"
+          :isLoading="isLoading"
+          :initialData="relation"
           @submit="handleSubmit"
           @cancel="handleCancel"
       />
@@ -18,23 +19,45 @@ import {RelationService} from "@/services/RelationService.ts";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 
+
 interface RelationFormData {
   title: string;
 }
 
-const relationId = router.currentRoute.value.params.id;
-
 const route = useRoute();
-const relationData = route.meta.relationData;
+const relation = ref<Relation | null>(null)
+const isLoading = ref(true)
+const error = ref<string | null>(null)
+
+
+const fetchRelation = async () => {
+    isLoading.value = true
+    try {
+        const response = await RelationService.getRelation(route.params.id as string)
+        relation.value = response.data
+    } catch (err) {
+        error.value = 'Failed to fetch relation'
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(() => {
+    fetchRelation()
+})
 
 const handleSubmit = async (data: RelationFormData) => {
+  isLoading.value = true
   try {
-    await RelationService.update(relationId, data);
+    await RelationService.update(route.params.id as string, data);
     await router.push({name: 'relations'});
   } catch (error) {
     console.error('Error:', error);
+  } finally {
+        isLoading.value = false
   }
 };
+
 
 const handleCancel = () => {
   router.push({name: 'relations'});

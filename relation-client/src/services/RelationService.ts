@@ -24,7 +24,7 @@ export const RelationService = {
 
 
     async getRelation(id: string): Promise<{
-        data: Relation[];
+        data: Relation;
         pagination: Pagination
     }> {
         const response = await ApiClient.get<ApiResponse<Relation>>("/relations/" + id);

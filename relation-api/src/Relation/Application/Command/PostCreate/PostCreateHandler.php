@@ -12,6 +12,7 @@ use App\Relation\Domain\ValueObject\Post\PostContent;
 use App\Relation\Domain\ValueObject\Post\PostId;
 use App\Relation\Domain\ValueObject\Post\PostPosition;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Domain\ValueObject\CreatedAt;
 use App\Shared\Domain\ValueObject\ModifiedAt;
 use App\Shared\Infrastructure\Generator\MongoObjectIdGenerator;
@@ -21,8 +22,10 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 readonly class PostCreateHandler
 {
     public function __construct(
-        private PostRepositoryInterface     $postRepository,
-        private RelationService             $relationService
+        private PostRepositoryInterface    $postRepository,
+        private RelationService            $relationService,
+        private MessageCommandBusInterface $messageBus
+
     ) {
     }
 
@@ -42,9 +45,13 @@ readonly class PostCreateHandler
             new ModifiedAt(new \DateTimeImmutable()),
             new IsPublished($command->isPublished())
         );
-
         $relation->addPost($post);
 
         $this->postRepository->save($post);
+
+        foreach ($relation->getDomainEvents() as $event) {
+            $this->messageBus->dispatch($event);
+        }
+        $relation->clearDomainEvents();
     }
 }

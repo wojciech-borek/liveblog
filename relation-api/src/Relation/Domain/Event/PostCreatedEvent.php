@@ -5,11 +5,11 @@ namespace App\Relation\Domain\Event;
 
 use App\Shared\Domain\Event\DomainEventInterface;
 
-final class PostDeletedEvent implements DomainEventInterface
+final  readonly class PostCreatedEvent implements DomainEventInterface
 {
     public function __construct(
         private string $id,
-        private string $relationId
+        private string $relationId,
     ) {
     }
 
@@ -20,4 +20,6 @@ final class PostDeletedEvent implements DomainEventInterface
     public function getRelationId(): string {
         return $this->relationId;
     }
+
+
 }
