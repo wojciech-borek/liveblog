@@ -20,7 +20,7 @@ final readonly class PostDeletedEventHandler
         $update = new Update(
             '/relation/' . $event->getRelationId(),
             json_encode([
-                'postId' => $event->getId(),
+                'id' => $event->getId(),
             ])
         );
         $this->hub->publish($update);

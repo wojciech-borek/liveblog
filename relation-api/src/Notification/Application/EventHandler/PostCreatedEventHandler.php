@@ -17,10 +17,19 @@ final readonly class PostCreatedEventHandler
     }
 
     public function __invoke(PostCreatedEvent $event): void {
+        if (null !== $event->getTemporaryId()) {
+            return;
+        }
+
         $update = new Update(
             '/relation/' . $event->getRelationId(),
             json_encode([
-                'postId' => $event->getId(),
+                "temporaryId" => $event->getTemporaryId(),
+                "id" => $event->getId(),
+                "position" => $event->getPosition(),
+                "content" => $event->getContent(),
+                "createdAt" => $event->getCreatedAt(),
+                "modifiedAt" => $event->getModifiedAt(),
             ])
         );
 
