@@ -8,14 +8,16 @@ use App\Relation\Domain\Exception\PostNotFoundException;
 use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\ValueObject\Post\PostId;
+use App\Shared\Application\MessageCommandBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 readonly class PostDeleteHandler
 {
     public function __construct(
-        private PostRepositoryInterface     $postRepository,
-        private RelationService             $relationService
+        private PostRepositoryInterface    $postRepository,
+        private RelationService            $relationService,
+        private MessageCommandBusInterface $messageBus
     ) {
     }
 
@@ -34,5 +36,9 @@ readonly class PostDeleteHandler
         $this->postRepository->updatePositions($relation->getPostsUnpublished());
         $this->postRepository->save($post);
         $this->postRepository->delete($post->getId());
+        foreach ($relation->getDomainEvents() as $event) {
+            $this->messageBus->dispatch($event);
+        }
+        $relation->clearDomainEvents();
     }
 }

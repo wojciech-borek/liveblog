@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="handleSubmit" v-model="isFormValid">
+  <v-form :disabled="isLoading" @submit.prevent="handleSubmit" v-model="isFormValid">
     <v-card variant="flat">
       <v-card-title>
         <span v-if="isEdit">Edit Relation</span>
@@ -58,6 +58,7 @@ interface FormErrors {
 
 const props = defineProps<{
   isEdit: boolean,
+  isLoading: boolean,
   initialData?: { title: string }
 }>();
 

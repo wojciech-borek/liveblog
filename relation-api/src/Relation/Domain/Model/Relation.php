@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Relation\Domain\Model;
 
 use App\Relation\Domain\Enum\RelationStatusEnum;
+use App\Relation\Domain\Event\PostCreatedEvent;
 use App\Relation\Domain\Event\PostDeletedEvent;
 use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
@@ -59,7 +60,7 @@ class Relation extends AggregateRoot
         $currentCollection = $this->selectCollection($post);
         $currentCollection->removeFromListsById($post->getId());
         $this->renumberPosts();
-        $this->raiseEvent(new PostDeletedEvent($post->getId()->getValue()));
+        $this->raiseEvent(new PostDeletedEvent($post->getId()->getValue(), $post->getRelationId()->getValue()));
         $this->updateModifiedAt();
     }
 
@@ -68,7 +69,11 @@ class Relation extends AggregateRoot
         $currentCollection = $this->selectCollection($post);
         $currentCollection->removeFromListsById($post->getId());
         $currentCollection->toggleIsPublishedPost($post);
-        $this->addPost($post);
+
+        $collection = $this->selectCollection($post);
+        $post->setPosition(new PostPosition($collection->count() + 1));
+        $collection->add($post);
+
         $this->renumberPosts();
         $this->raiseEvent(new ToggledIsPublishedPostEvent($post->getId()->getValue(), $post->getIsPublished()->getValue()));
 
@@ -97,10 +102,19 @@ class Relation extends AggregateRoot
         $this->updateModifiedAt();
     }
 
-    public function addPost(Post $post): void {
+    public function addPost(Post $post, ?string $temporaryId): void {
         $collection = $this->selectCollection($post);
         $post->setPosition(new PostPosition($collection->count() + 1));
         $collection->add($post);
+        $this->raiseEvent(new PostCreatedEvent(
+            $post->getId()->getValue(),
+            $post->getPosition()->getValue(),
+            $post->getContent()->getValue(),
+            $post->getCreatedAt()->getValue()->format(DATE_ATOM),
+            $post->getModifiedAt()->getValue()->format(DATE_ATOM),
+            $post->getRelationId()->getValue(),
+            $temporaryId,
+        ));
     }
 
     public function loadPosts(PostCollection $postCollection): void {

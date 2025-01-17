@@ -11,6 +11,7 @@ use App\Relation\Domain\Model\Post;
 use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\MessageCommandBusInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -19,14 +20,17 @@ class PostCreateHandlerTest extends TestCase
     private PostCreateHandler $handler;
     private MockObject $postRepository;
     private MockObject $relationService;
+    private MockObject $messageBus;
 
     protected function setUp(): void {
         $this->postRepository = $this->createMock(PostRepositoryInterface::class);
         $this->relationService = $this->createMock(RelationService::class);
+        $this->messageBus = $this->createMock(MessageCommandBusInterface::class);
 
         $this->handler = new PostCreateHandler(
             $this->postRepository,
-            $this->relationService
+            $this->relationService,
+            $this->messageBus
         );
     }
 

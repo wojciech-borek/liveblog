@@ -44,14 +44,14 @@ final readonly class CreatePostAction
             new OA\Response(response: 500, description: "Internal server error")
         ]
     )]
-    public function __invoke(Request $request): JsonResponse
-    {
+    public function __invoke(Request $request): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         $this->messageBus->dispatch(new PostCreateCommand(
             $data['relationId'],
             $data['content'],
-            $data['isPublished']
+            $data['isPublished'],
+            !empty($data['temporaryId']) ? $data['temporaryId'] : null,
         ));
 
         return new JsonResponse(null, Response::HTTP_CREATED);

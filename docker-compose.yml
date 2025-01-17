@@ -13,6 +13,22 @@ services:
     networks:
       - app_network
 
+  mercure:
+    image: dunglas/mercure
+    environment:
+      MERCURE_JWT_SECRET: 'Xy3zbE5vYTNUUkxkQkZTOVljTnRvT1ZGckZUZ2FEdFc='
+      MERCURE_PUBLISHER_JWT_KEY: 'Xy3zbE5vYTNUUkxkQkZTOVljTnRvT1ZGckZUZ2FEdFc='
+      MERCURE_SUBSCRIBER_JWT_KEY: 'Xy3zbE5vYTNUUkxkQkZTOVljTnRvT1ZGckZUZ2FEdFc='
+      MERCURE_PUBLISH_ALLOWED_ORIGINS: '*'
+      MERCURE_SUBSCRIBE_ALLOWED_ORIGINS: '*'
+      SERVER_TLS: '0'
+      SERVER_REDIRECT_TO_HTTPS: '0'
+      SERVER_NAME: ":80"
+    ports:
+      - '8080:80'
+    networks:
+      - app_network
+
   swagger:
     image: swaggerapi/swagger-ui
     container_name: swagger-ui
@@ -21,7 +37,7 @@ services:
     environment:
       SWAGGER_JSON: /swagger.json
     ports:
-      - "8080:8080"
+      - "8082:8080"
     networks:
       - app_network
 

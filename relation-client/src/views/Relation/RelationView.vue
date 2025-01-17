@@ -1,6 +1,5 @@
 <template>
     <v-row>
-      <!-- Lewa kolumna z formularzem -->
       <v-col cols="12" md="6">
         <PostForm @add-post="addPost"/>
       </v-col>
@@ -11,10 +10,10 @@
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item>
-            <PostList :items="relationData.postsPublished"/>
+            <PostList v-if="relation" :items="relation.postsPublished"/>
           </v-window-item>
           <v-window-item>
-            <PostList :items="relationData.postsUnpublished"/>
+            <PostList v-if="relation" :items="relation.postsUnpublished"/>
           </v-window-item>
         </v-window>
       </v-col>
@@ -22,39 +21,58 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue';
+import {reactive, onMounted, ref} from 'vue';
 import PostForm from '@/components/Relation/PostForm.vue';
 import {useRoute} from 'vue-router';
 import {PostService} from '@/services/PostService.ts';
+import {RelationService} from '@/services/RelationService.ts';
 import {Relation} from "@/models/index.ts";
 import PostList from "@/components/Relation/PostList.vue";
+import { Post } from '../../models';
 
 const route = useRoute();
 const relationId = route.params.id;
-const initialData = route.meta.relationData as Relation
 
-const relationData = reactive({
-  postsUnpublished: initialData.postsUnpublished || [],
-  postsPublished: initialData.postsPublished || []
-});
 const tab = ref(0);
+const relation = ref<Relation | null>(null)
+const isLoading = ref(true)
 
-const addPost = async (isPublished: true, post: { content: string }) => {
+const fetchRelation = async () => {
+    isLoading.value = true
+    try {
+        const response = await RelationService.getRelation(route.params.id as string)
+        relation.value = response.data
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(() => {
+    fetchRelation()
+})
+
+const addPost = async (isPublished: boolean, post: { content: string }) => {
   try {
     const newPost = {
       relationId,
       content: post.content,
-      isPublished: isPublished,
+      isPublished,
     }
     await PostService.create(newPost);
-    isPublished ? relationData.postsPublished.push(newPost) : relationData.postsUnpublished.push(newPost);
+    fetchRelation()
   } catch (error) {
     console.error('Error:', error);
   }
 };
 
-const publishPost = (index: number) => {
-  const postToPublish = relationData.postsUnpublished.splice(index, 1)[0];
-  relationData.postsPublished.push(postToPublish);
+const publishPost = async (post: Post, index: number) => {
+  try {
+    await PostService.update(post.id, { ...post, isPublished: true });
+    fetchRelation()
+  } catch (error) {
+    console.error('Error publishing post:', error);
+  }
 };
 </script>

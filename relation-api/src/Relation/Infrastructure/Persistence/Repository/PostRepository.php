@@ -59,7 +59,7 @@ class PostRepository extends DoctrineRepository implements PostRepositoryInterfa
 
     public function findByRelationId(RelationId $relationId): PostCollection {
         $posts = $this->repository(PostDocument::class)
-            ->findBy(['relationId' => $relationId->getValue()]);
+            ->findBy(['relationId' => $relationId->getValue()], ['position' => 'desc']);
 
         $postCollection = new PostCollection();
         foreach ($posts as $post) {

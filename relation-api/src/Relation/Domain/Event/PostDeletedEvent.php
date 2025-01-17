@@ -8,7 +8,8 @@ use App\Shared\Domain\Event\DomainEventInterface;
 final class PostDeletedEvent implements DomainEventInterface
 {
     public function __construct(
-        private string $id
+        private string $id,
+        private string $relationId
     ) {
     }
 
@@ -16,5 +17,7 @@ final class PostDeletedEvent implements DomainEventInterface
         return $this->id;
     }
 
-
+    public function getRelationId(): string {
+        return $this->relationId;
+    }
 }
