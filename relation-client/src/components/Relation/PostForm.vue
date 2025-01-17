@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="formValid">
+  <v-form :disabled="isLoading" v-model="formValid">
     <v-textarea
         v-model="newPost.content"
         label="Content"
@@ -13,6 +13,10 @@
 
 <script setup lang="ts">
 import {ref, defineEmits} from 'vue';
+
+const props = defineProps<{
+  isLoading: boolean,
+}>();
 
 const emit = defineEmits<{
   (e: 'add-post', post: { title: string; content: string }): void;

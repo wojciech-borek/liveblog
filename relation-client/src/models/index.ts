@@ -1,6 +1,9 @@
 export interface Post {
     id: string;
+    status: string,
+    position: number,
     content: string,
+    temporaryId: string
 }
 
 export interface Relation {
