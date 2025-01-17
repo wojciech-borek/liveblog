@@ -12,6 +12,7 @@ class PostListDTOAssembler
         return new PostDTO(
             $post->getId(),
             $post->getContent(),
+            $post->getPosition(),
             $post->getCreatedAt(),
             $post->getModifiedAt()
         );

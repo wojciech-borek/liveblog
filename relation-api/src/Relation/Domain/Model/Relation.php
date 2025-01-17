@@ -102,11 +102,19 @@ class Relation extends AggregateRoot
         $this->updateModifiedAt();
     }
 
-    public function addPost(Post $post): void {
+    public function addPost(Post $post, ?string $temporaryId): void {
         $collection = $this->selectCollection($post);
         $post->setPosition(new PostPosition($collection->count() + 1));
         $collection->add($post);
-        $this->raiseEvent(new PostCreatedEvent($post->getId()->getValue(), $post->getRelationId()->getValue()));
+        $this->raiseEvent(new PostCreatedEvent(
+            $post->getId()->getValue(),
+            $post->getPosition()->getValue(),
+            $post->getContent()->getValue(),
+            $post->getCreatedAt()->getValue()->format(DATE_ATOM),
+            $post->getModifiedAt()->getValue()->format(DATE_ATOM),
+            $post->getRelationId()->getValue(),
+            $temporaryId,
+        ));
     }
 
     public function loadPosts(PostCollection $postCollection): void {

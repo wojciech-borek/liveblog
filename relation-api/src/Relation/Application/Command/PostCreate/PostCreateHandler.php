@@ -45,7 +45,7 @@ readonly class PostCreateHandler
             new ModifiedAt(new \DateTimeImmutable()),
             new IsPublished($command->isPublished())
         );
-        $relation->addPost($post);
+        $relation->addPost($post,$command->getTemporaryId());
 
         $this->postRepository->save($post);
 
