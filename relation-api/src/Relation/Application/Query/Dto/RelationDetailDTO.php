@@ -26,7 +26,7 @@ readonly class RelationDetailDTO implements \JsonSerializable
     }
 
 
-    public function jsonSerialize(): mixed {
+    public function jsonSerialize(): array {
         return [
             "id" => $this->id->getValue(),
             "title" => $this->title->getValue(),
