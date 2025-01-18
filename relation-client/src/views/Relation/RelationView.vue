@@ -55,7 +55,7 @@ const fetchRelation = async () => {
 }
 
 const sortedPosts = (posts: Post[]): Post[] => {
-  return [...posts].sort((a: Post, b:Post) => b.position - a.position);
+  return [...posts].sort((a: Post, b:Post) => (b.position ?? 0) - (a.position ?? 0));
 }
 
 onMounted(() => {
