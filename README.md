@@ -1,13 +1,14 @@
 # liveblog
 
-# liveblog-api
-#messanger-consume
-php bin/console messenger:consume async -vv
 
-#phpstan
-php vendor/bin/phpstan analyse
+## Uruchomienie Środowiska Deweloperskiego
+- Sklonuj repozytorium
+- Skopiuj .env do .env.local i dostosuj wartości
+- Uruchom
+  ```docker-compose up -d```
+- Zainstaluj zależności: 
+```composer install```
 
-#behat
-APP_ENV=test vendor/bin/behat
+## liveblog-api [Dokumentacja](relation-api/README.md)
 
 
