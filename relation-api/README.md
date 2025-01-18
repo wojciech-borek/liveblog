@@ -1,16 +1,3 @@
-# liveblog
-
-
-## Uruchomienie Środowiska Deweloperskiego
-- Sklonuj repozytorium
-- Skopiuj .env do .env.local i dostosuj wartości
-- Uruchom
-  ```docker-compose up -d```
-- Zainstaluj zależności: 
-```composer install```
-
-## liveblog-api [Dokumentacja](relation-api/README.md)
-
 # LiveBlog Relation API
 
 System zarządzania relacjami z obsługą aktualizacji w czasie rzeczywistym przy użyciu Mercure. Aplikacja zbudowana jest w oparciu o framework Symfony.
