@@ -1,4 +1,4 @@
-interface ad {
+interface MercureMessage {
     data: unknown;
     type: string;
     id?: string;
@@ -6,8 +6,8 @@ interface ad {
 export function subscribeToMercure(topic: string, onMessage: (data: MercureMessage) => void): EventSource {
     const url = new URL(import.meta.env.VITE_MERCURE_URL);
     url.searchParams.append('topic', topic);
-    url.searchParams.append('jwt', import.meta.env.VITE_MERCURE_JWT);
-    const eventSource = new EventSource(url.toString());
+    const eventSource = new EventSource(url.toString(), {});
+
     eventSource.onmessage = (event) => {
         try {
             const data = JSON.parse(event.data);
