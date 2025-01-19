@@ -10,13 +10,13 @@ export const PostService = {
         temporaryId: string
     }): Promise<{ data: null; pagination: null }> {
         try {
-            const respone = await ApiClient.post('/posts', {
+            const response = await ApiClient.post('/posts', {
                 relationId: relationId,
                 content: post.content,
                 isPublished: post.isPublished,
                 temporaryId: post.temporaryId
             })
-            return respone.data
+            return response.data
         } catch (error) {
             console.error('Failed to create post:', error);
             throw error;
