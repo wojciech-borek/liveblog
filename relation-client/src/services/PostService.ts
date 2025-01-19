@@ -1,17 +1,17 @@
 import ApiClient, {ApiResponse} from "./ApiClient";
-import {Relation} from "@/models";
+import {Relation,Post} from "@/models";
 import {Pagination} from "./Pagination";
 
 export const PostService = {
 
-    async create(params: { relationId: string, content: string, isPublished: boolean }): Promise<{
-        data: null;
-        pagination: null
-    }> {
-        const response = await ApiClient.post('/posts', {
-            relationId: params.relationId, content: params.content, isPublished: params.isPublished
-        })
-        return response.data
+    async create(params: { relationId: string, content: string, isPublished: boolean, temporaryId: string }): Promise<Post> {
+        const response = await ApiClient.post('/posts',params)
+       return {
+            id:"",
+            content: params.content,
+            temporaryId: params.temporaryId,
+            status: 'in_sync',
+          };
     },
 
 }
