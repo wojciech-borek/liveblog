@@ -4,20 +4,18 @@ import {Pagination} from "./Pagination";
 
 export const PostService = {
 
-    async create(params: {
-        relationId: string,
+    async create(relationId:string, post: {
         content: string,
         isPublished: boolean,
         temporaryId: string
     }): Promise<Post> {
         try {
-            const response = await ApiClient.post('/posts', params)
-            return {
-                id: "",
-                content: params.content,
-                temporaryId: params.temporaryId,
-                status: 'in_sync',
-            };
+            await ApiClient.post('/posts', {
+                relationId: relationId,
+                content: post.content,
+                isPublished: post.isPublished,
+                temporaryId: post.temporaryId
+            })
         } catch (error) {
             console.error('Failed to create post:', error);
             throw error;
