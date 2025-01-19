@@ -78,7 +78,9 @@ const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
 
 onMounted(() => {
   const topic = '/relation/' + route.params.id;
-  eventSource = subscribeToMercure(topic, (data: any) => {
+  eventSource = subscribeToMercure(topic, (message: any) => {
+    console.log(message)
+    const { data } = message;
     if (data) {
       updatePost(data, postsPublished.value);
       updatePost(data, postsUnpublished.value);

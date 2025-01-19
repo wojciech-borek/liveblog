@@ -1,22 +1,28 @@
-export function subscribeToMercure(topic: string, onMessage: (data: any) => void): EventSource {
-    console.log(import.meta.env.VITE_MERCURE_URL)
+interface ad {
+    data: unknown;
+    type: string;
+    id?: string;
+}
+export function subscribeToMercure(topic: string, onMessage: (data: MercureMessage) => void): EventSource {
     const url = new URL(import.meta.env.VITE_MERCURE_URL);
     url.searchParams.append('topic', topic);
-    url.searchParams.append('jwt',import.meta.env.MERCURE_JWT);
+    url.searchParams.append('jwt', import.meta.env.VITE_MERCURE_JWT);
     const eventSource = new EventSource(url.toString());
-
     eventSource.onmessage = (event) => {
         try {
             const data = JSON.parse(event.data);
-            onMessage(data);
+            onMessage({
+                data,
+                type: event.type,
+                id: event.lastEventId
+            });
         } catch (error) {
-            console.error('Error parse:', error);
+            console.error('Failed to parse SSE message:', error);
         }
     };
-
     eventSource.onerror = (error) => {
-        console.error('Error connecting:', error);
+        console.error('SSE connection error:', error);
+        eventSource.close();
     };
-
     return eventSource;
 }
