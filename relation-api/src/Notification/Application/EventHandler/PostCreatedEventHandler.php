@@ -17,7 +17,7 @@ final readonly class PostCreatedEventHandler
     }
 
     public function __invoke(PostCreatedEvent $event): void {
-        if (null !== $event->getTemporaryId()) {
+        if (null === $event->getTemporaryId()) {
             return;
         }
 
