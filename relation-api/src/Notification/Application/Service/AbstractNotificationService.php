@@ -27,7 +27,7 @@ abstract class AbstractNotificationService
             $this->logger->info('Publishing notification id: ' . $id, [
                 'topic' => $topic->getValue(),
                 'type' => $type->value,
-                'data' => $data
+                'data' => $data->toArray()
             ]);
 
         } catch (\Exception $e) {

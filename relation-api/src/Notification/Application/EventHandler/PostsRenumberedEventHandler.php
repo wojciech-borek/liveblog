@@ -20,7 +20,7 @@ final readonly class PostsRenumberedEventHandler
 
         $notificationDto = new PostsRenumberedNotificationDto(
             $event->getPostsPublishedPositionMap(),
-            $event->getPostsPublishedPositionMap(),
+            $event->getPostsUnpublishedPositionMap(),
         );
 
         $this->notificationService->notifyPostsRenumbered(NotificationTopic::forRelation($event->getRelationId()), $notificationDto);
