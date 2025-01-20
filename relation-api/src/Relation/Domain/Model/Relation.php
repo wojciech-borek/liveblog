@@ -8,6 +8,7 @@ use App\Relation\Domain\Event\PostCreatedEvent;
 use App\Relation\Domain\Event\PostDeletedEvent;
 use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Event\PostsRenumberedEvent;
+use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Post\PostPosition;
