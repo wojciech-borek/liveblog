@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Relation\Application\EventHandler;
 
-use App\Relation\Domain\Event\RelationDeletedEvent;
 use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

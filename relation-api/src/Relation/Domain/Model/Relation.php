@@ -7,7 +7,7 @@ use App\Relation\Domain\Enum\RelationStatusEnum;
 use App\Relation\Domain\Event\PostCreatedEvent;
 use App\Relation\Domain\Event\PostDeletedEvent;
 use App\Relation\Domain\Event\RelationDeletedEvent;
-use App\Relation\Domain\Event\ToggledIsPublishedPostEvent;
+use App\Relation\Domain\Event\PostsRenumberedEvent;
 use App\Relation\Domain\Exception\InvalidRelationStatusException;
 use App\Relation\Domain\ValueObject\Post\IsPublished;
 use App\Relation\Domain\ValueObject\Post\PostPosition;
@@ -69,11 +69,9 @@ class Relation extends AggregateRoot
         $currentCollection = $this->selectCollection($post);
         $currentCollection->removeFromListsById($post->getId());
         $currentCollection->toggleIsPublishedPost($post);
-
         $collection = $this->selectCollection($post);
         $post->setPosition(new PostPosition($collection->count() + 1));
         $collection->add($post);
-
         $this->renumberPosts();
         $this->raiseEvent(new ToggledIsPublishedPostEvent($post->getId()->getValue(), $post->getIsPublished()->getValue()));
 
@@ -82,6 +80,11 @@ class Relation extends AggregateRoot
     private function renumberPosts(): void {
         $this->postsPublished->renumber();
         $this->postsUnpublished->renumber();
+        $this->raiseEvent(new PostsRenumberedEvent(
+                $this->getId()->getValue(),
+                $this->postsPublished->getIdPositionMap(),
+                $this->postsUnpublished->getIdPositionMap())
+        );
     }
 
     private function updateModifiedAt(): void {
