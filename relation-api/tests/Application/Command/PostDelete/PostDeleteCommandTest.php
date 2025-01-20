@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Application\Command\PostDelete;
 
 use App\Relation\Application\Command\PostCreate\PostCreateCommand;
+use App\Relation\Application\Command\PostDelete\PostDeleteCommand;
 use PHPUnit\Framework\TestCase;
 
 class PostDeleteCommandTest extends TestCase
