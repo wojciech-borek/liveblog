@@ -17,7 +17,7 @@ class PostDeleteCommandTest extends TestCase
 
     public function testGetRelationId(): void {
         $command = new PostDeleteCommand($this->id);
-        $this->assertEquals($this->id, $command->getId());
+        $this->assertEquals($this->id, $command->getPostId());
     }
 
 
