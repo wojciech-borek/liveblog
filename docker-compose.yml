@@ -21,6 +21,10 @@ services:
       MERCURE_SUBSCRIBER_JWT_KEY: 'Xy3zbE5vYTNUUkxkQkZTOVljTnRvT1ZGckZUZ2FEdFc='
       MERCURE_PUBLISH_ALLOWED_ORIGINS: '*'
       MERCURE_SUBSCRIBE_ALLOWED_ORIGINS: '*'
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins *
+        anonymous
+      DEBUG: '1'
       SERVER_TLS: '0'
       SERVER_REDIRECT_TO_HTTPS: '0'
       SERVER_NAME: ":80"
