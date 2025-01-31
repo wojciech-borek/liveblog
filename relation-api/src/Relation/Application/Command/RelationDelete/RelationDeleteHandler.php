@@ -8,8 +8,8 @@ use App\Relation\Domain\Exception\RelationNotFoundException;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\MessageCommandBusInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 final readonly class RelationDeleteHandler
@@ -18,7 +18,7 @@ final readonly class RelationDeleteHandler
         private RelationRepositoryInterface $relationRepository,
         private PostRepositoryInterface     $postRepository,
         private RelationService             $relationService,
-        private MessageBusInterface         $messageBus,
+        private MessageCommandBusInterface  $messageBus,
 
     ) {
     }

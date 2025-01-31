@@ -62,7 +62,7 @@ class PostCollection
         return count($this->list);
     }
 
-    protected function getIdPositionMap(): array {
+    public function getIdPositionMap(): array {
         return array_map(fn($post) => [
             'id' => $post->getId(),
             'position' => $post->getPosition(),
