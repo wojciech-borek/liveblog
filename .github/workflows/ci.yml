@@ -45,3 +45,33 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         working-directory: relation-api
         run: vendor/bin/phpunit
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push API image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: c
+          IMAGE_TAG: ${{ github.sha }}
+        working-directory: ./relation-api
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name liveblog-cluster --region ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f k8s/relation-api/
+          kubectl rollout restart deployment relation-api
