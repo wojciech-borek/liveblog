@@ -11,9 +11,9 @@ use App\Relation\Domain\Model\Relation;
 use App\Relation\Domain\Repository\PostRepositoryInterface;
 use App\Relation\Domain\Repository\RelationRepositoryInterface;
 use App\Relation\Domain\ValueObject\Relation\RelationId;
+use App\Shared\Application\MessageCommandBusInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class RelationDeleteHandlerTest extends TestCase
 {
@@ -27,7 +27,7 @@ class RelationDeleteHandlerTest extends TestCase
         $this->relationRepository = $this->createMock(RelationRepositoryInterface::class);
         $this->postRepository = $this->createMock(PostRepositoryInterface::class);
         $this->relationService = $this->createMock(RelationService::class);
-        $this->messageBus = $this->createMock(MessageBusInterface::class);
+        $this->messageBus = $this->createMock(MessageCommandBusInterface::class);
 
         $this->handler = new RelationDeleteHandler(
             $this->relationRepository,
