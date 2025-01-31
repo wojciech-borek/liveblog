@@ -7,16 +7,16 @@ use App\FirebaseAuth\Domain\Exception\UserRegistrationEmailExistsException;
 use App\FirebaseAuth\Domain\Exception\UserRegistrationException;
 use App\FirebaseAuth\Domain\ValueObject\Email;
 use App\FirebaseAuth\Domain\ValueObject\Password;
+use App\Shared\Application\MessageCommandBusInterface;
 use App\Shared\Infrastructure\Firebase\FirebaseAuthInterface;
 use Kreait\Firebase\Exception\Auth\EmailExists;
 use App\FirebaseAuth\Domain\Model\User;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 readonly class RegisterUserHandler
 {
-    public function __construct(private FirebaseAuthInterface $firebaseAuth, private MessageBusInterface $messageBus,
+    public function __construct(private FirebaseAuthInterface $firebaseAuth, private MessageCommandBusInterface $messageBus,
     ) {
     }
 
