@@ -7,6 +7,7 @@ final readonly class PostCreatedNotificationDto implements NotificationDataDtoIn
     public function __construct(
         private string  $id,
         private int     $position,
+        private bool    $isPublished,
         private string  $content,
         private string  $createdAt,
         private string  $modifiedAt,
@@ -19,6 +20,7 @@ final readonly class PostCreatedNotificationDto implements NotificationDataDtoIn
             'id' => $this->id,
             'content' => $this->content,
             'position' => $this->position,
+            'isPublished' => $this->isPublished,
             'createdAt' => $this->createdAt,
             'modifiedAt' => $this->modifiedAt,
             'temporaryId' => $this->temporaryId
