@@ -149,6 +149,37 @@
                 }
             }
         },
+        "\/api\/posts\/{id}": {
+            "delete": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Delete a post by ID",
+                "operationId": "deletePost",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the post to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Post was deleted successfully"
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "422": {
+                        "description": "Invalid ID provided"
+                    }
+                }
+            }
+        },
         "\/api\/relations\/{id}\/change_status": {
             "post": {
                 "tags": [
@@ -489,7 +520,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Relation was deleted successfully"
                     },
                     "404": {
