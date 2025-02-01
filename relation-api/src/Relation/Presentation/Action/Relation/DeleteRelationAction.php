@@ -35,7 +35,7 @@ final readonly class DeleteRelationAction
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: "Relation was deleted successfully"),
+            new OA\Response(response: 204, description: "Relation was deleted successfully"),
             new OA\Response(response: 404, description: "Relation not found"),
             new OA\Response(response: 422, description: "Invalid ID provided")
         ]
