@@ -10,6 +10,7 @@ final  readonly class PostCreatedEvent implements DomainEventInterface
     public function __construct(
         private string $id,
         private int    $position,
+        private bool   $isPublished,
         private string $content,
         private string $createdAt,
         private string $modifiedAt,
@@ -47,5 +48,7 @@ final  readonly class PostCreatedEvent implements DomainEventInterface
         return $this->modifiedAt;
     }
 
-
+    public function isPublished(): bool {
+        return $this->isPublished;
+    }
 }

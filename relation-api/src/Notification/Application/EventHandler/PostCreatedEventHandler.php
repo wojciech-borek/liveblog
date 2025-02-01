@@ -24,6 +24,7 @@ final readonly class PostCreatedEventHandler
         $notificationDto = new PostCreatedNotificationDto(
             $event->getId(),
             $event->getPosition(),
+            $event->isPublished(),
             $event->getContent(),
             $event->getCreatedAt(),
             $event->getModifiedAt(),

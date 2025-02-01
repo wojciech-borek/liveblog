@@ -112,6 +112,7 @@ class Relation extends AggregateRoot
         $this->raiseEvent(new PostCreatedEvent(
             $post->getId()->getValue(),
             $post->getPosition()->getValue(),
+            $post->getIsPublished()->getValue(),
             $post->getContent()->getValue(),
             $post->getCreatedAt()->getValue()->format(DATE_ATOM),
             $post->getModifiedAt()->getValue()->format(DATE_ATOM),
