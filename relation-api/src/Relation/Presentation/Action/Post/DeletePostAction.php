@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Relation\Presentation\Action\Post;
 
-use App\Relation\Application\Command\PostCreate\PostCreateCommand;
 use App\Relation\Application\Command\PostDelete\PostDeleteCommand;
 use App\Relation\Domain\Exception\PostNotFoundException;
 use App\Shared\Application\MessageCommandBusInterface;
