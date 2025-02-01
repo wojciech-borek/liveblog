@@ -34,7 +34,6 @@ readonly class PostDeleteHandler
         $relation->removePost($post);
         $this->postRepository->updatePositions($relation->getPostsPublished());
         $this->postRepository->updatePositions($relation->getPostsUnpublished());
-        $this->postRepository->save($post);
         $this->postRepository->delete($post->getId());
         foreach ($relation->getDomainEvents() as $event) {
             $this->messageBus->dispatch($event);
