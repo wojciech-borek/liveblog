@@ -1,6 +1,7 @@
 export interface Post {
     id: string;
     status: string,
+    isPublished: boolean,
     position: number,
     content: string,
     temporaryId: string

@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, onMounted, ref, onUnmounted} from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
 import PostForm from '@/components/Relation/PostForm.vue';
 import {useRoute} from 'vue-router';
 import {PostService} from '@/services/PostService.ts';
@@ -64,9 +64,11 @@ let eventSource: EventSource;
 const updatePost = (data: any, posts: Post[]) => {
   const index = posts.findIndex((post) => post.temporaryId === data.temporaryId);
   if (index !== -1) {
-    const updatedPost = { ...posts[index], ...data };
+    const updatedPost = {...posts[index], ...data};
     updatedPost.status = '';
     posts[index] = updatedPost;
+  } else {
+    posts.unshift(data);
   }
 }
 const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
@@ -78,12 +80,16 @@ const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
 
 onMounted(() => {
   const topic = '/relation/' + route.params.id;
-  eventSource = subscribeToMercure(topic, (message: any) => {
+  eventSource = subscribeToMercure(topic, async (message: any) => {
     console.log(message)
-    const { data } = message;
-    if (data) {
-      updatePost(data, postsPublished.value);
-      updatePost(data, postsUnpublished.value);
+    const {data, type} = message.data;
+    if (type === 'post_created') {
+      let postList = data.isPublished ? postsPublished : postsUnpublished
+      updatePost(data, postList.value)
+      postList.value = sortedPosts(postList.value);
+    }
+    if (type === 'post_deleted') {
+
     }
   });
   fetchRelation()
