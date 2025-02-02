@@ -10,10 +10,10 @@
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item>
-          <PostList v-if="!isLoading" :items="postsPublished"/>
+          <PostList v-if="!isLoading" @handleDelete="deletePost" :items="postsPublished"/>
         </v-window-item>
         <v-window-item>
-          <PostList v-if="!isLoading" :items="postsUnpublished"/>
+          <PostList v-if="!isLoading" @handleDelete="deletePost" :items="postsUnpublished"/>
         </v-window-item>
       </v-window>
     </v-col>
@@ -31,6 +31,7 @@ import PostList from "@/components/Relation/PostList.vue";
 import {Post} from '../../models';
 import {v4 as uuidv4} from 'uuid';
 import {subscribeToMercure} from "@/services/Mercure.ts";
+import {da, id} from "vuetify/locale";
 
 
 const route = useRoute();
@@ -71,8 +72,8 @@ const updatePost = (data: any, posts: Post[]) => {
     posts.unshift(data);
   }
 }
-const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
-  const index = posts.findIndex(post => post[key] === temporaryId);
+const splicePost = (key: string, value: string, posts: Post[]) => {
+  const index = posts.findIndex(post => post[key] === value);
   if (index !== -1) {
     posts.splice(index, 1);
   }
@@ -83,13 +84,14 @@ onMounted(() => {
   eventSource = subscribeToMercure(topic, async (message: any) => {
     console.log(message)
     const {data, type} = message.data;
+    let postList = data.isPublished ? postsPublished : postsUnpublished
+
     if (type === 'post_created') {
-      let postList = data.isPublished ? postsPublished : postsUnpublished
       updatePost(data, postList.value)
       postList.value = sortedPosts(postList.value);
     }
     if (type === 'post_deleted') {
-
+      splicePost('id', data.id, postList.value)
     }
   });
   fetchRelation()
@@ -117,9 +119,27 @@ const addPost = async (isPublished: boolean, post: { content: string }) => {
     await PostService.create(relationId, newPost);
   } catch (error) {
     console.error('Error:', error);
-    splicePost('temporaryId', temporaryId, isPublished ? postsPublished.value : postsUnpublished.value)
+    let postList = isPublished ? postsPublished : postsUnpublished
+    splicePost('temporaryId', temporaryId, postList.value)
   }
 };
+
+const deletePost = async (post: Post) => {
+  try {
+    changePostToInSync(post,'id');
+    await PostService.delete(post.id);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+const changePostToInSync = (post: Post) => {
+  let postList = post.isPublished ? postsPublished : postsUnpublished
+  const index = postList.value.findIndex(item => item.id === post.id);
+  if (index !== -1) {
+    postList.value[index] = {...post, status: 'in_sync'}
+  }
+}
 
 
 const publishPost = async (post: Post, index: number) => {

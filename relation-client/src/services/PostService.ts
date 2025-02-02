@@ -23,4 +23,11 @@ export const PostService = {
         }
     },
 
+
+    async delete(id: string): Promise<{ data: null; pagination: null }> {
+        const response = await ApiClient.delete('/posts/' + id)
+        return response.data
+    }
+
+
 }
