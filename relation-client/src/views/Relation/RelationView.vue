@@ -126,18 +126,19 @@ const addPost = async (isPublished: boolean, post: { content: string }) => {
 
 const deletePost = async (post: Post) => {
   try {
-    changePostToInSync(post);
+    changePostStatus(post,'in_sync');
     await PostService.delete(post.id);
   } catch (error) {
+    changePostStatus(post,'');
     console.error('Error:', error);
   }
 };
 
-const changePostToInSync = (post: Post) => {
+const changePostStatus = (post: Post,status: string) => {
   let postList = post.isPublished ? postsPublished : postsUnpublished
   const index = postList.value.findIndex(item => item.id === post.id);
   if (index !== -1) {
-    postList.value[index] = {...post, status: 'in_sync'}
+    postList.value[index] = {...post, status: status}
   }
 }
 
