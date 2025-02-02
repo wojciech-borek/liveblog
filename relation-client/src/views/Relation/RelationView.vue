@@ -126,7 +126,7 @@ const addPost = async (isPublished: boolean, post: { content: string }) => {
 
 const deletePost = async (post: Post) => {
   try {
-    changePostToInSync(post,'id');
+    changePostToInSync(post);
     await PostService.delete(post.id);
   } catch (error) {
     console.error('Error:', error);
