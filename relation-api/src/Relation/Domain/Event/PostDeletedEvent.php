@@ -9,7 +9,9 @@ final class PostDeletedEvent implements DomainEventInterface
 {
     public function __construct(
         private string $id,
-        private string $relationId
+        private string $relationId,
+        private bool   $isPublished,
+
     ) {
     }
 
@@ -20,4 +22,9 @@ final class PostDeletedEvent implements DomainEventInterface
     public function getRelationId(): string {
         return $this->relationId;
     }
+
+    public function isPublished(): bool {
+        return $this->isPublished;
+    }
+
 }

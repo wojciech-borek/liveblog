@@ -61,7 +61,11 @@ class Relation extends AggregateRoot
         $currentCollection = $this->selectCollection($post);
         $currentCollection->removeFromListsById($post->getId());
         $this->renumberPosts();
-        $this->raiseEvent(new PostDeletedEvent($post->getId()->getValue(), $post->getRelationId()->getValue()));
+        $this->raiseEvent(new PostDeletedEvent(
+            $post->getId()->getValue(),
+            $post->getRelationId()->getValue(),
+            $post->getIsPublished()->getValue()
+        ));
     }
 
 

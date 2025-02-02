@@ -13,6 +13,7 @@ class PostListDTOAssembler
             $post->getId(),
             $post->getContent(),
             $post->getPosition(),
+            $post->getIsPublished(),
             $post->getCreatedAt(),
             $post->getModifiedAt()
         );

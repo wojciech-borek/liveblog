@@ -6,12 +6,14 @@ final readonly class PostDeletedNotificationDto implements NotificationDataDtoIn
 {
     public function __construct(
         private string  $id,
+        private bool    $isPublished,
     ) {
     }
 
     public function toArray(): array {
         return [
             'id' => $this->id,
+            'isPublished' => $this->isPublished,
         ];
     }
 }
