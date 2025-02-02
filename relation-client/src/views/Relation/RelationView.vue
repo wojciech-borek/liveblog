@@ -10,10 +10,10 @@
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item>
-          <PostList v-if="!isLoading" :items="postsPublished"/>
+          <PostList v-if="!isLoading" @handleDelete="deletePost" :items="postsPublished"/>
         </v-window-item>
         <v-window-item>
-          <PostList v-if="!isLoading" :items="postsUnpublished"/>
+          <PostList v-if="!isLoading" @handleDelete="deletePost" :items="postsUnpublished"/>
         </v-window-item>
       </v-window>
     </v-col>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, onMounted, ref, onUnmounted} from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
 import PostForm from '@/components/Relation/PostForm.vue';
 import {useRoute} from 'vue-router';
 import {PostService} from '@/services/PostService.ts';
@@ -64,13 +64,15 @@ let eventSource: EventSource;
 const updatePost = (data: any, posts: Post[]) => {
   const index = posts.findIndex((post) => post.temporaryId === data.temporaryId);
   if (index !== -1) {
-    const updatedPost = { ...posts[index], ...data };
+    const updatedPost = {...posts[index], ...data};
     updatedPost.status = '';
     posts[index] = updatedPost;
+  } else {
+    posts.unshift(data);
   }
 }
-const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
-  const index = posts.findIndex(post => post[key] === temporaryId);
+const splicePost = (key: string, value: string, posts: Post[]) => {
+  const index = posts.findIndex(post => post[key] === value);
   if (index !== -1) {
     posts.splice(index, 1);
   }
@@ -78,12 +80,17 @@ const splicePost = (key: string, temporaryId: string, posts: Post[]) => {
 
 onMounted(() => {
   const topic = '/relation/' + route.params.id;
-  eventSource = subscribeToMercure(topic, (message: any) => {
+  eventSource = subscribeToMercure(topic, async (message: any) => {
     console.log(message)
-    const { data } = message;
-    if (data) {
-      updatePost(data, postsPublished.value);
-      updatePost(data, postsUnpublished.value);
+    const {data, type} = message.data;
+    let postList = data.isPublished ? postsPublished : postsUnpublished
+
+    if (type === 'post_created') {
+      updatePost(data, postList.value)
+      postList.value = sortedPosts(postList.value);
+    }
+    if (type === 'post_deleted') {
+      splicePost('id', data.id, postList.value)
     }
   });
   fetchRelation()
@@ -111,9 +118,28 @@ const addPost = async (isPublished: boolean, post: { content: string }) => {
     await PostService.create(relationId, newPost);
   } catch (error) {
     console.error('Error:', error);
-    splicePost('temporaryId', temporaryId, isPublished ? postsPublished.value : postsUnpublished.value)
+    let postList = isPublished ? postsPublished : postsUnpublished
+    splicePost('temporaryId', temporaryId, postList.value)
   }
 };
+
+const deletePost = async (post: Post) => {
+  try {
+    changePostStatus(post,'in_sync');
+    await PostService.delete(post.id);
+  } catch (error) {
+    changePostStatus(post,'');
+    console.error('Error:', error);
+  }
+};
+
+const changePostStatus = (post: Post,status: string) => {
+  let postList = post.isPublished ? postsPublished : postsUnpublished
+  const index = postList.value.findIndex(item => item.id === post.id);
+  if (index !== -1) {
+    postList.value[index] = {...post, status: status}
+  }
+}
 
 
 const publishPost = async (post: Post, index: number) => {

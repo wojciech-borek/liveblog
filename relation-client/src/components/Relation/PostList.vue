@@ -13,7 +13,7 @@
         </v-card-text>
         <v-card-actions>
           <div class="d-flex justify-end">
-            <v-icon class="me-2" color="error" icon="mdi-delete" v-tooltip="'delete'" size="small"></v-icon>
+            <v-icon class="me-2" color="error" icon="mdi-delete" @click="handleDelete(post)" v-tooltip="'delete'" size="small"></v-icon>
             <v-icon class="me-2" icon="mdi-share-variant" v-tooltip="'publish'" size="small"></v-icon>
           </div>
         </v-card-actions>
@@ -25,9 +25,19 @@
 
 <script setup lang="ts">
 import type {Post} from "@/models/index.ts";
+import {defineEmits} from "vue";
 
 const props = defineProps<{
   items: Post[];
 }>();
+
+const emit = defineEmits<{
+  (e: 'handleDelete', post: Post): void;
+}>();
+
+const handleDelete = (post: Post) => {
+  emit('handleDelete', post);
+};
+
 
 </script>
