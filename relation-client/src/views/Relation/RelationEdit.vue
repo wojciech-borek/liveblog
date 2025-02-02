@@ -18,6 +18,7 @@ import router from "@/router/index.ts";
 import {RelationService} from "@/services/RelationService.ts";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
+import {Relation} from "@/models/index.ts";
 
 
 interface RelationFormData {

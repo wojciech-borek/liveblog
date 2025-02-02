@@ -1,6 +1,5 @@
 import ApiClient, {ApiResponse} from "./ApiClient";
-import {Relation, Post} from "@/models";
-import {Pagination} from "./Pagination";
+
 
 export const PostService = {
 
@@ -22,5 +21,17 @@ export const PostService = {
             throw error;
         }
     },
+
+
+    async delete(id: string): Promise<{ data: null; pagination: null }> {
+        try {
+            const response = await ApiClient.delete(`/posts/${encodeURIComponent(id)}`)
+            return response.data
+        } catch (error) {
+            console.error('Failed to delete post:', error);
+            throw error;
+        }
+    }
+
 
 }
