@@ -31,7 +31,6 @@ import PostList from "@/components/Relation/PostList.vue";
 import {Post} from '../../models';
 import {v4 as uuidv4} from 'uuid';
 import {subscribeToMercure} from "@/services/Mercure.ts";
-import {da, id} from "vuetify/locale";
 
 
 const route = useRoute();
