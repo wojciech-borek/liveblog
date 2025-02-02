@@ -25,6 +25,8 @@ final readonly class PostDeletedEventHandler
 
         $notificationDto = new PostDeletedNotificationDto(
             $event->getId(),
+            $event->isPublished(),
+
         );
 
         $this->notificationService->notifyPostDeleted(NotificationTopic::forRelation($event->getRelationId()), $notificationDto);
