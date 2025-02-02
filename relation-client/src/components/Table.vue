@@ -94,11 +94,11 @@ const handleDeleteConfirmed = () => {
   }
 };
 
-const handleEdit = async (id: string) => {
+const handleEdit = (id: string) => {
   emit('handleEdit', id);
 };
 
-const handleView = async (id: string) => {
+const handleView = (id: string) => {
   emit('handleView', id);
 };
 </script>

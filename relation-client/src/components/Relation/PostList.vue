@@ -35,7 +35,7 @@ const emit = defineEmits<{
   (e: 'handleDelete', post: Post): void;
 }>();
 
-const handleDelete = async (post: Post) => {
+const handleDelete = (post: Post) => {
   emit('handleDelete', post);
 };
 
