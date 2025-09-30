@@ -47,7 +47,7 @@ services:
 
   relation-client:
     container_name: relation-client
-    image: node:18
+    image: node:22
     working_dir: /var/www/html/relation-client
     volumes:
       - ./relation-client:/var/www/html/relation-client:cached
